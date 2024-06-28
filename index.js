@@ -1,15 +1,14 @@
-const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 const colors = require('colors');
 
 
 const app = require('./app');
+const client = require('./dbConnection');
 
 
-// database connection 
-mongoose.connect(process.env.DATABASE).then(() => {
-    console.log(`Database connection is Successful...`.red.bold);
-})
+client.connect()
+    .then(() => console.log('Connected to the database'))
+    .catch(err => console.error('Connection error', err));
 
 
 //server
