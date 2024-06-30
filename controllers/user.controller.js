@@ -1,8 +1,12 @@
 const { createNewUserService, getAllUserService } = require("../services/user.service")
+const bcrypt = require("bcrypt");
 
 exports.createNewUser = async (req, res) => {
     try {
-        const newUser = await createNewUserService(req.body);
+        const userData = req.body;
+        const hashedPassword = await bcrypt.hash(userData.password, 10);
+        userData.password = hashedPassword;
+        const newUser = await createNewUserService(userData);
 
         if (newUser) {
             res.status(200).json({
