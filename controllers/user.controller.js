@@ -1,5 +1,6 @@
 const { createNewUserService, getAllUserService, getUserByIdService, deleteUserByIdService, updateUserByIdService, userLoginService } = require("../services/user.service")
 const bcrypt = require("bcrypt");
+const { generateToken } = require("../utils/generateToken");
 
 exports.createNewUser = async (req, res) => {
     try {
@@ -148,20 +149,25 @@ exports.userLogin = async (req, res) => {
 
         const user = await userLoginService(email);
 
-
-        if (user) {
+        if (user?.user_id) {
 
             // remove password and address field
             const { password: pwd, address: addr, ...others } = user;
-            console.log(others);
 
             // compare password
             const isPasswordMatched = await bcrypt.compare(password, user.password);
 
             if (isPasswordMatched) {
+
+                // generate token
+                const token = generateToken(others);
+
                 res.status(200).json({
                     status: "Success",
-                    data: others
+                    data: {
+                        ...others,
+                        accessToken: token
+                    }
                 })
             }
             else {
