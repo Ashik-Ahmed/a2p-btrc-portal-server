@@ -5,6 +5,11 @@ const { generateToken } = require("../utils/generateToken");
 exports.createNewUser = async (req, res) => {
     try {
         const userData = req.body;
+
+        // if password not provided set default password
+        if (!userData.password) {
+            userData.password = '12345678';
+        }
         const hashedPassword = await bcrypt.hash(userData.password, 10);
         userData.password = hashedPassword;
         const newUser = await createNewUserService(userData);
@@ -21,7 +26,6 @@ exports.createNewUser = async (req, res) => {
                 message: "User creation failed"
             })
         }
-
     } catch (error) {
         res.status(500).json({
             status: "Failed",
@@ -32,12 +36,12 @@ exports.createNewUser = async (req, res) => {
 
 exports.getAllUser = async (req, res) => {
     try {
-        const getAllUser = await getAllUserService(req.body);
+        const users = await getAllUserService(req.body);
 
-        if (getAllUser) {
+        if (users) {
             res.status(200).json({
                 status: "Success",
-                data: getAllUser
+                data: users
             })
         }
         else {
@@ -81,8 +85,8 @@ exports.getUserById = async (req, res) => {
 }
 
 exports.updateUserById = async (req, res) => {
+    console.log(req.params.id, req.body);
     try {
-        console.log(req.params.id, req.body);
         const result = await updateUserByIdService(req.params.id, req.body);
         if (result?.rowCount > 0) {
             res.status(200).json({
@@ -161,7 +165,6 @@ exports.userLogin = async (req, res) => {
 
                 // generate token
                 const token = generateToken(others);
-
                 res.status(200).json({
                     status: "Success",
                     data: {

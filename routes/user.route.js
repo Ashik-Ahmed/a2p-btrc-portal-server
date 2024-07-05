@@ -13,7 +13,7 @@ router.route('/')
 
 router.route('/:id')
     .get(getUserById)
-    // .patch(updateUserById)
+    .patch(updateUserById)
     .delete(deleteUserById)
 
 
