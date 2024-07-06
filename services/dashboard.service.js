@@ -1,7 +1,7 @@
 const client = require("../dbConnection");
 
 exports.getDashboardWeeklyDataService = async () => {
-    const dashboardData = await client.query(`SELECT 
+    const dashboardWeeklyData = await client.query(`SELECT 
     DATE(date) as date,
     SUM(smscount) as total_sms,
     SUM(dippingcount) as total_dipping
@@ -15,5 +15,15 @@ GROUP BY
 ORDER BY 
     DATE(date) ASC`);
 
-    return dashboardData.rows;
+    return dashboardWeeklyData.rows;
+}
+
+
+exports.getTopAggregatorService = async () => {
+    const topAggregator = await client.query(`SELECT clientId, SUM(smscount) AS total_smscount
+FROM dashboard_tbl
+GROUP BY clientId
+ORDER BY total_smscount DESC
+LIMIT 10`);
+    return topAggregator.rows;
 }
