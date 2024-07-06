@@ -28,7 +28,8 @@ exports.getDashboardWeeklyData = async (req, res) => {
 
 exports.getTopAggregator = async (req, res) => {
     try {
-        const topAggregator = await getTopAggregatorService();
+        const { interval } = req.query;
+        const topAggregator = await getTopAggregatorService(interval);
         console.log(topAggregator);
         if (topAggregator) {
             res.status(200).json({

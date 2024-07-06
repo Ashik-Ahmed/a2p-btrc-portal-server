@@ -19,9 +19,11 @@ ORDER BY
 }
 
 
-exports.getTopAggregatorService = async () => {
+exports.getTopAggregatorService = async (interval) => {
+
     const topAggregator = await client.query(`SELECT clientId, SUM(smscount) AS total_smscount
 FROM dashboard_tbl
+WHERE date >= current_date - INTERVAL '${interval}'
 GROUP BY clientId
 ORDER BY total_smscount DESC
 LIMIT 10`);
