@@ -8,8 +8,8 @@ exports.getDashboardWeeklyDataService = async () => {
 FROM 
     public.dashboard_tbl
 WHERE 
-    date >= current_date - INTERVAL '7 days' 
-    AND date < current_date + INTERVAL '1 day'
+    date >= TIMESTAMP '2024-06-29T18:00:00.000Z' - INTERVAL '6 days' 
+    AND date < TIMESTAMP '2024-06-29T18:00:00.000Z' + INTERVAL '1 day'
 GROUP BY 
     DATE(date)
 ORDER BY 
@@ -21,11 +21,22 @@ ORDER BY
 
 exports.getTopAggregatorService = async (interval) => {
 
-    const topAggregator = await client.query(`SELECT clientId, SUM(smscount) AS total_smscount
+    const topAggregator = await client.query(`SELECT clientId, SUM(smscount) AS total_smscount, SUM(dippingcount) AS total_dippingcount
 FROM dashboard_tbl
 WHERE date >= current_date - INTERVAL '${interval}'
 GROUP BY clientId
 ORDER BY total_smscount DESC
 LIMIT 10`);
     return topAggregator.rows;
+}
+
+exports.getTopANSService = async (interval) => {
+
+    const topANS = await client.query(`SELECT ansname, SUM(smscount) AS total_smscount, SUM(dippingcount) AS total_dippingcount
+FROM dashboard_tbl
+WHERE date >= current_date - INTERVAL '${interval}'
+GROUP BY ansname
+ORDER BY total_smscount DESC
+LIMIT 10`);
+    return topANS.rows;
 }

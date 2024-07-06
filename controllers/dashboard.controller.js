@@ -1,4 +1,4 @@
-const { getDashboardWeeklyDataService, getTopAggregatorService } = require("../services/dashboard.service");
+const { getDashboardWeeklyDataService, getTopAggregatorService, getTopANSService } = require("../services/dashboard.service");
 
 exports.getDashboardWeeklyData = async (req, res) => {
     try {
@@ -35,6 +35,32 @@ exports.getTopAggregator = async (req, res) => {
             res.status(200).json({
                 status: "Success",
                 data: topAggregator
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                message: "No data found"
+            })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: "Failed",
+            message: error.message
+        })
+    }
+}
+
+exports.getTopANS = async (req, res) => {
+    try {
+        const { interval } = req.query;
+        const topANS = await getTopANSService(interval);
+        console.log(topANS);
+        if (topANS) {
+            res.status(200).json({
+                status: "Success",
+                data: topANS
             })
         }
         else {
