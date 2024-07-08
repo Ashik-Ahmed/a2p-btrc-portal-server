@@ -3,7 +3,7 @@ const { getDashboardWeeklyDataService, getTopAggregatorService, getTopANSService
 exports.getDashboardWeeklyData = async (req, res) => {
     try {
         const dashboardData = await getDashboardWeeklyDataService();
-        console.log(dashboardData);
+        // console.log(dashboardData);
         if (dashboardData) {
             res.status(200).json({
                 status: "Success",
@@ -28,9 +28,9 @@ exports.getDashboardWeeklyData = async (req, res) => {
 
 exports.getTopAggregator = async (req, res) => {
     try {
-        const { interval } = req.query;
+        const { interval } = req.query || 7;
         const topAggregator = await getTopAggregatorService(interval);
-        console.log(topAggregator);
+        // console.log(topAggregator);
         if (topAggregator) {
             res.status(200).json({
                 status: "Success",
@@ -54,9 +54,9 @@ exports.getTopAggregator = async (req, res) => {
 
 exports.getTopANS = async (req, res) => {
     try {
-        const { interval } = req.query;
+        const { interval } = req.query || 7;
         const topANS = await getTopANSService(interval);
-        console.log(topANS);
+        // console.log(topANS);
         if (topANS) {
             res.status(200).json({
                 status: "Success",
