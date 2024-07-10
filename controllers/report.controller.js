@@ -2,8 +2,10 @@ const { getSummaryReportService } = require("../services/report.service");
 
 exports.getSummaryReport = async (req, res) => {
     try {
-        const summaryReport = await getSummaryReportService();
-        console.log(summaryReport);
+        const filter = JSON.parse(req.query.filter) || {};
+
+        const summaryReport = await getSummaryReportService(filter);
+        // console.log(summaryReport);
         if (summaryReport) {
             res.status(200).json({
                 status: "Success",
