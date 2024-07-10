@@ -12,6 +12,7 @@ exports.getSummaryReportService = async (filter) => {
             cli,
             message_type,
             sms_count,
+            dipping_count,
             source_ip
         FROM 
             dipping_summary_tbl_2024_06
