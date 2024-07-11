@@ -1,7 +1,8 @@
 const client = require("../dbConnection");
+const { formatDate } = require("../utils/formatDate");
 
 exports.getSummaryReportService = async (filter) => {
-
+    console.log("filter service: ", formatDate(filter?.start_date), formatDate(filter?.end_date));
     // Base query
     let query = `
         SELECT 
@@ -46,7 +47,7 @@ exports.getSummaryReportService = async (filter) => {
     }
     if (filter.start_date && filter.end_date) {
         conditions.push(`delivery_date BETWEEN $${conditions.length + 1} AND $${conditions.length + 2}`);
-        values.push(filter.start_date, filter.end_date);
+        values.push(formatDate(filter.start_date), formatDate(filter.end_date));
     }
 
     // If there are conditions, append them to the query
@@ -56,12 +57,12 @@ exports.getSummaryReportService = async (filter) => {
 
     // Append the ORDER BY clause
     query += 'ORDER BY sms_count DESC';
-    console.log(conditions);
+    // console.log(query, values);
     try {
         const summaryReport = await client.query(query, values);
         return summaryReport.rows;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);
-        throw err;
+        return err;
     }
 };
