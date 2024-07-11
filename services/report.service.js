@@ -16,7 +16,7 @@ exports.getSummaryReportService = async (filter) => {
             dipping_count,
             source_ip
         FROM 
-            dipping_summary_tbl_2024_06
+            dipping_summary_tbl
     `;
 
     // Array to hold the conditions
@@ -52,7 +52,7 @@ exports.getSummaryReportService = async (filter) => {
 
     // If there are conditions, append them to the query
     if (conditions.length > 0) {
-        query += 'WHERE ' + conditions.join(' AND ') + ' ';
+        query += ' WHERE ' + conditions.join(' AND ') + ' ';
     }
 
     // Append the ORDER BY clause

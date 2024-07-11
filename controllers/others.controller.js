@@ -2,7 +2,9 @@ const { getCliListService } = require("../services/others.service");
 
 exports.getCliList = async (req, res) => {
     try {
-        const cliList = await getCliListService();
+        const filter = JSON.parse(req?.query?.filter) || {};
+        const cliList = await getCliListService(filter);
+        // console.log(cliList);
         if (cliList) {
             res.status(200).json({
                 status: "Success",
@@ -18,6 +20,7 @@ exports.getCliList = async (req, res) => {
         }
 
     } catch (error) {
+        // console.log(error);
         res.status(500).json({
             status: "Failed",
             message: error.message

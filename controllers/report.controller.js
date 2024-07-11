@@ -2,7 +2,7 @@ const { getSummaryReportService } = require("../services/report.service");
 
 exports.getSummaryReport = async (req, res) => {
     try {
-        const filter = JSON.parse(req.query.filter) || {};
+        const filter = JSON.parse(req.query?.filter) || {};
 
         const summaryReport = await getSummaryReportService(filter);
         // console.log(summaryReport);
