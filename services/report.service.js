@@ -2,7 +2,7 @@ const client = require("../dbConnection");
 const { formatDate } = require("../utils/formatDate");
 
 exports.getSummaryReportService = async (filter) => {
-    console.log("filter service: ", formatDate(filter?.start_date), formatDate(filter?.end_date));
+    // console.log("filter service: ", formatDate(filter?.start_date), formatDate(filter?.end_date));
     // Base query
     let query = `
         SELECT 
@@ -56,10 +56,11 @@ exports.getSummaryReportService = async (filter) => {
     }
 
     // Append the ORDER BY clause
-    query += 'ORDER BY sms_count DESC';
+    query += ' ORDER BY sms_count DESC';
     // console.log(query, values);
     try {
         const summaryReport = await client.query(query, values);
+        // console.log(summaryReport.rows.length);
         return summaryReport.rows;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);

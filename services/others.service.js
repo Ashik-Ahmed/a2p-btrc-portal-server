@@ -1,6 +1,7 @@
 const client = require("../dbConnection");
 
 exports.getCliListService = async (filter) => {
+
     let query = "SELECT DISTINCT cli FROM dipping_summary_tbl";
 
     // Array to hold the conditions
@@ -25,15 +26,15 @@ exports.getCliListService = async (filter) => {
 
     // If there are conditions, append them to the query
     if (conditions.length > 0) {
-        query += ' WHERE ' + conditions.join(' AND ') + ' ';
+        query += ' WHERE ' + conditions.join(' AND ');
     }
 
     // Append the ORDER BY clause
-    query += 'ORDER BY cli DESC';
+    query += ' ORDER BY cli DESC';
     // console.log(query, values);
     try {
         const clList = await client.query(query, values);
-        console.log(clList.rows.length);
+        // console.log(clList.rows.length);
         return clList.rows;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);
