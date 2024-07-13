@@ -18,10 +18,10 @@ exports.getUserByIdService = async (id) => {
     return user.rows[0];
 }
 
-// exports.getUserByEmailService = async (email) => {
-//     const user = await client.query("SELECT * FROM users_tbl WHERE email = $1", [email]);
-//     return user.rows[0];
-// }
+exports.updatePasswordByIdService = async (id, password) => {
+    const result = await client.query("UPDATE users_tbl SET password = $1 WHERE user_id = $2", [password, id]);
+    return result;
+}
 
 exports.updateUserByIdService = async (id, userData) => {
 

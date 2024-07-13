@@ -1,4 +1,4 @@
-const { createNewUserService, getAllUserService, getUserByIdService, deleteUserByIdService, updateUserByIdService, userLoginService } = require("../services/user.service")
+const { createNewUserService, getAllUserService, getUserByIdService, deleteUserByIdService, updateUserByIdService, userLoginService, updatePasswordByIdService } = require("../services/user.service")
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../utils/generateToken");
 
@@ -68,7 +68,7 @@ exports.getUserById = async (req, res) => {
         if (user) {
             res.status(200).json({
                 status: "Success",
-                data: others
+                data: user
             })
         }
         else {
@@ -80,6 +80,68 @@ exports.getUserById = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({
+            status: "Failed",
+            message: error.message
+        })
+    }
+}
+
+exports.updatePasswordById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { password, newPassword } = req.body;
+
+        if (!password || !newPassword) {
+            return res.status(401).json({
+                status: "Failed",
+                message: "Please provide current password and new password"
+            })
+        }
+
+        if (newPassword.length < 8) {
+            return res.status(402).json({
+                status: "Failed",
+                message: "Password must be at least 8 characters long"
+            })
+        }
+
+        const user = await getUserByIdService(id);
+        if (!user) {
+            return res.status(403).json({
+                status: "Failed",
+                message: "No user found"
+            })
+        }
+        // console.log(password, user);
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(405).json({
+                status: "Failed",
+                message: "Current password didn't match"
+            })
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        // console.log("hashed: ", hashedPassword);
+        const result = await updatePasswordByIdService(id, hashedPassword);
+        if (result?.rowCount > 0) {
+            return res.status(200).json({
+                status: "Success",
+                data: {
+                    command: result.command,
+                    rowCount: result.rowCount
+                }
+            })
+        }
+        else {
+            return res.status(400).json({
+                status: "Failed",
+                message: "Internal Server Error"
+            })
+        }
+
+    } catch (error) {
+        return res.status(500).json({
             status: "Failed",
             message: error.message
         })
