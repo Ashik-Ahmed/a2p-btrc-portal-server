@@ -63,10 +63,12 @@ exports.getUserById = async (req, res) => {
     try {
         const user = await getUserByIdService(req.params.id);
 
+        const { password, ...others } = user
+
         if (user) {
             res.status(200).json({
                 status: "Success",
-                data: user
+                data: others
             })
         }
         else {
