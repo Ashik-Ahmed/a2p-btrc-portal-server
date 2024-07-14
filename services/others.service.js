@@ -1,5 +1,10 @@
 const client = require("../dbConnection");
 
+exports.getAggregatorListService = async () => {
+    const aggregatorList = await client.query("SELECT DISTINCT client_id FROM dipping_summary_tbl");
+    return aggregatorList.rows;
+}
+
 exports.getCliListService = async (filter) => {
 
     let query = "SELECT DISTINCT cli FROM dipping_summary_tbl";

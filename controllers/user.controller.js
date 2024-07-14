@@ -89,9 +89,9 @@ exports.getUserById = async (req, res) => {
 exports.updatePasswordById = async (req, res) => {
     try {
         const { id } = req.params;
-        const { password, newPassword } = req.body;
+        const { currentPassword, newPassword } = req.body;
 
-        if (!password || !newPassword) {
+        if (!currentPassword || !newPassword) {
             return res.status(401).json({
                 status: "Failed",
                 message: "Please provide current password and new password"
@@ -113,7 +113,7 @@ exports.updatePasswordById = async (req, res) => {
             })
         }
         // console.log(password, user);
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
         if (!isMatch) {
             return res.status(405).json({
                 status: "Failed",
@@ -141,6 +141,7 @@ exports.updatePasswordById = async (req, res) => {
         }
 
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             status: "Failed",
             message: error.message
@@ -149,7 +150,7 @@ exports.updatePasswordById = async (req, res) => {
 }
 
 exports.updateUserById = async (req, res) => {
-    console.log(req.params.id, req.body);
+    // console.log(req.params.id, req.body);
     try {
         const result = await updateUserByIdService(req.params.id, req.body);
         if (result?.rowCount > 0) {

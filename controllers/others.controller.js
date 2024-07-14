@@ -1,4 +1,30 @@
-const { getCliListService } = require("../services/others.service");
+const { getCliListService, getAggregatorListService } = require("../services/others.service");
+
+exports.getAggregatorList = async (req, res) => {
+    try {
+        const aggregatorList = await getAggregatorListService();
+        if (aggregatorList) {
+            res.status(200).json({
+                status: "Success",
+                data: aggregatorList
+            })
+        }
+
+        else {
+            res.status(400).json({
+                status: "Failed",
+                message: "No data found"
+            })
+        }
+
+    } catch (error) {
+        // console.log(error);
+        res.status(500).json({
+            status: "Failed",
+            message: error.message
+        })
+    }
+}
 
 exports.getCliList = async (req, res) => {
     try {

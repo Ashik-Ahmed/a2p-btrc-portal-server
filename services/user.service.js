@@ -19,6 +19,7 @@ exports.getUserByIdService = async (id) => {
 }
 
 exports.updatePasswordByIdService = async (id, password) => {
+    // console.log("from service: ", id, password);
     const result = await client.query("UPDATE users_tbl SET password = $1 WHERE user_id = $2", [password, id]);
     return result;
 }
