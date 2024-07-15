@@ -1,14 +1,15 @@
 const express = require('express');
 const { getCliList, getAggregatorList } = require('../controllers/others.controller');
+const verifyToken = require('../middleware/verifyToken');
 
 
 const router = express.Router();
 
 
 router.route('/aggregatorList')
-    .get(getAggregatorList)
+    .get(verifyToken, getAggregatorList)
 
 router.route('/cliList')
-    .get(getCliList)
+    .get(verifyToken, getCliList)
 
 module.exports = router

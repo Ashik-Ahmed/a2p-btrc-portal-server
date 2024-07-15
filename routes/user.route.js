@@ -18,8 +18,8 @@ router.route('/')
 
 router.route('/:id')
     .get(verifyToken, getUserById)
-    .patch(updateUserById)
-    .delete(deleteUserById)
+    .patch(verifyToken, updateUserById)
+    .delete(verifyToken, deleteUserById)
 
 
 module.exports = router;
