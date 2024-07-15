@@ -87,6 +87,7 @@ exports.getUserById = async (req, res) => {
 }
 
 exports.updatePasswordById = async (req, res) => {
+    console.log(req.params, req.body);
     try {
         const { id } = req.params;
         const { currentPassword, newPassword } = req.body;
@@ -122,7 +123,7 @@ exports.updatePasswordById = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
-        // console.log("hashed: ", hashedPassword);
+
         const result = await updatePasswordByIdService(id, hashedPassword);
         if (result?.rowCount > 0) {
             return res.status(200).json({
@@ -206,9 +207,10 @@ exports.deleteUserById = async (req, res) => {
 }
 
 exports.userLogin = async (req, res) => {
+    console.log(req.body);
     try {
         const { email, password } = req.body;
-        console.log(email, password);
+        // console.log(email, password);
         if (!email || !password) {
             return res.status(401).json({
                 status: 'Failed',
@@ -227,7 +229,6 @@ exports.userLogin = async (req, res) => {
             const isPasswordMatched = await bcrypt.compare(password, user.password);
 
             if (isPasswordMatched) {
-
                 // generate token
                 const token = generateToken(others);
                 res.status(200).json({
@@ -252,6 +253,7 @@ exports.userLogin = async (req, res) => {
             })
         }
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             status: "Failed",
             message: error.message

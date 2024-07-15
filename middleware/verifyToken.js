@@ -1,0 +1,31 @@
+const jwt = require('jsonwebtoken');
+const { promisify } = require('util');
+
+
+
+module.exports = async (req, res, next) => {
+
+    try {
+        const token = req.headers?.authorization?.split(' ')?.[1];
+        // console.log(token);
+        if (!token) {
+            return res.status(401).json({
+                status: 'Failed',
+                message: 'Unauthorized Access'
+            })
+        }
+
+        const decodecd = await promisify(jwt.verify)(token, process.env.ACCESS_TOKEN_SECRET);
+        // console.log(decodecd);
+
+        req.user = decodecd;
+
+        next();
+
+    } catch (error) {
+        return res.status(403).json({
+            status: 'Failed',
+            message: 'Invalid Token'
+        })
+    }
+}
