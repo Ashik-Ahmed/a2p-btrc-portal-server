@@ -5,6 +5,11 @@ exports.getAggregatorListService = async () => {
     return aggregatorList.rows;
 }
 
+exports.getANSListService = async () => {
+    const ansList = await client.query("SELECT DISTINCT operator FROM dipping_summary_tbl");
+    return ansList.rows;
+}
+
 exports.getCliListService = async (filter) => {
 
     let query = "SELECT DISTINCT cli FROM dipping_summary_tbl";
