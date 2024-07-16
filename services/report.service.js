@@ -67,3 +67,19 @@ exports.getSummaryReportService = async (filter) => {
         return err;
     }
 };
+
+
+exports.datewiseReportService = async (date) => {
+
+    const datewiseReport = await client.query(`
+        SELECT 
+            TO_CHAR(DATE(delivery_date), 'YYYY-MM-DD') as delivery_date,
+            sms_count,
+            dipping_count
+        FROM 
+            dipping_summary_tbl
+        WHERE
+            delivery_date = '${formatDate(date)}'
+    `);
+    return datewiseReport.rows
+}
