@@ -98,7 +98,7 @@ exports.datewiseReportService = async (filter) => {
     query += 'GROUP BY DATE(delivery_date) ';
 
     // Append the ORDER BY clause
-    query += ' ORDER BY delivery_date DESC';
+    query += ' ORDER BY delivery_date ASC';
     // console.log(query, values);
     try {
         const datewiseReport = await client.query(query, values);
