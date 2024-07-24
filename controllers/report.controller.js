@@ -29,8 +29,17 @@ exports.getSummaryReport = async (req, res) => {
 
 exports.datewiseReport = async (req, res) => {
     try {
-        const date = req.query?.date;
-        const datewiseReport = await datewiseReportService(date);
+        const filter = JSON.parse(req.query?.filter) || {};
+        // console.log(filter);
+        if (!filter.start_date || !filter.end_date) {
+            return res.status(403).json({
+                status: "Failed",
+                message: "Please provide start_date and end_date"
+            })
+        }
+
+
+        const datewiseReport = await datewiseReportService(filter);
 
         if (datewiseReport) {
             res.status(200).json({

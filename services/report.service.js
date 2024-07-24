@@ -64,14 +64,55 @@ exports.getSummaryReportService = async (filter) => {
         return summaryReport.rows;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);
-        return err;
+        return err?.message;
     }
 };
 
 
-exports.datewiseReportService = async (date) => {
+exports.datewiseReportService = async (filter) => {
 
-    const datewiseReport = await client.query(`
+    console.log(formatDate(filter.start_date), formatDate(filter.end_date));
+    let query = ` SELECT 
+            TO_CHAR(DATE(delivery_date), 'YYYY-MM-DD') as delivery_date,
+            SUM(sms_count) as sms_count,
+            SUM(dipping_count) as dipping_count
+        FROM 
+            dipping_summary_tbl`;
+
+    // Array to hold the conditions
+    const conditions = [];
+    // Array to hold the parameter values
+    const values = [];
+
+    if (filter.start_date && filter.end_date) {
+        conditions.push(`delivery_date BETWEEN $${conditions.length + 1} AND $${conditions.length + 2}`);
+        values.push(formatDate(filter.start_date), formatDate(filter.end_date));
+    }
+
+    // If there are conditions, append them to the query
+    if (conditions.length > 0) {
+        query += ' WHERE ' + conditions.join(' AND ') + ' ';
+    }
+
+    // Append the GROUP BY clause
+    query += 'GROUP BY DATE(delivery_date) ';
+
+    // Append the ORDER BY clause
+    query += ' ORDER BY delivery_date DESC';
+    // console.log(query, values);
+    try {
+        const datewiseReport = await client.query(query, values);
+        // console.log(datewiseReport.rows);
+        return datewiseReport.rows;
+    } catch (err) {
+        console.error('Error executing query', err.message, err.stack);
+        return err?.message;
+    }
+}
+
+exports.aggregatorwiseReportService = async (aggregator) => {
+
+    const aggregatorwiseReport = await client.query(`
         SELECT 
             TO_CHAR(DATE(delivery_date), 'YYYY-MM-DD') as delivery_date,
             sms_count,
@@ -79,7 +120,7 @@ exports.datewiseReportService = async (date) => {
         FROM 
             dipping_summary_tbl
         WHERE
-            delivery_date = '${formatDate(date)}'
+            operator = '${aggregator}'
     `);
-    return datewiseReport.rows
+    return aggregatorwiseReport.rows
 }
