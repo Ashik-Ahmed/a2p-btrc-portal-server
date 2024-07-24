@@ -1,5 +1,5 @@
 const express = require('express');
-const { getSummaryReport, datewiseReport } = require('../controllers/report.controller');
+const { getSummaryReport, datewiseReport, aggregatorwiseReport } = require('../controllers/report.controller');
 const verifyToken = require('../middleware/verifyToken');
 
 
@@ -11,5 +11,8 @@ router.route('/a2pSummaryReport')
 
 router.route('/datewiseReport')
     .get(verifyToken, datewiseReport)
+
+router.route('/aggregatorwiseReport')
+    .get(verifyToken, aggregatorwiseReport)
 
 module.exports = router
