@@ -1,8 +1,10 @@
-const { formatDate } = require("../utils/formatDate");
+const client = require("../dbConnection");
+const { formatDate, formatDateAsPartition } = require("../utils/formatDate");
 
 exports.getReportByMSISDNService = async (filter) => {
-    let query = `SELECT * FROM public.cp_broadcast_history_btrc_tbl_2024_07_15`;
 
+    let query = `SELECT * FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.date)}`;
+    console.log(query);
     // Array to hold the conditions
     const conditions = [];
     // Array to hold the parameter values
@@ -27,11 +29,10 @@ exports.getReportByMSISDNService = async (filter) => {
 
     try {
         const msisdnReport = await client.query(query, values);
-        // console.log(msisdnReport.rows);
+
         return msisdnReport.rows;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);
         return err?.message;
     }
-
 }

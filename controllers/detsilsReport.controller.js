@@ -1,6 +1,6 @@
 const { getReportByMSISDNService } = require("../services/detailsReport.service");
 
-exports.getReportByMSISDN = (req, res) => {
+exports.getReportByMSISDN = async (req, res) => {
     try {
 
         const filter = JSON.parse(req.query?.filter) || {};
@@ -18,9 +18,9 @@ exports.getReportByMSISDN = (req, res) => {
             })
         }
 
-        const msisdnDetailsReport = getReportByMSISDNService(filter);
-
-        if (msisdnDetailsReport) {
+        const msisdnDetailsReport = await getReportByMSISDNService(filter);
+        // console.log(msisdnDetailsReport);
+        if (msisdnDetailsReport.length > 0) {
             res.status(200).json({
                 status: "Success",
                 data: msisdnDetailsReport

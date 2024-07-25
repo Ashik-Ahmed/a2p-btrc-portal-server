@@ -5,3 +5,13 @@ exports.formatDate = (date) => {
     const day = d.getDate();
     return `${year}-${month}-${day}`;
 }
+
+exports.formatDateAsPartition = (inputDate) => {
+    const date = new Date(inputDate);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed in JavaScript
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}_${month}_${day}`;
+}

@@ -3,7 +3,7 @@ const { getReportByMSISDN } = require('../controllers/detsilsReport.controller')
 
 const router = express.Router();
 
-router.route("/msisdn/:id")
+router.route("/msisdn")
     .get(getReportByMSISDN)
 
 
