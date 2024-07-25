@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
     } catch (error) {
         return res.status(403).json({
             status: 'Failed',
-            message: 'Invalid Token'
+            message: 'Access denied'
         })
     }
 }

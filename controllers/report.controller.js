@@ -77,7 +77,7 @@ exports.aggregatorwiseReport = async (req, res) => {
         }
 
         const aggregatorwiseReport = await aggregatorwiseReportService(filter);
-
+        // console.log(aggregatorwiseReport);
         if (aggregatorwiseReport) {
             res.status(200).json({
                 status: "Success",
