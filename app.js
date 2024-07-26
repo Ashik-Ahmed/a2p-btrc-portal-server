@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
 const userRoute = require('./routes/user.route');
 const dashboardRoute = require('./routes/dashboard.route');
 const reportRoute = require('./routes/report.route');
+const dippingReportRoute = require('./routes/dippingReport.route');
 const detailsReportRoute = require('./routes/detailsReport.route')
 const othersRoute = require('./routes/others.route');
 
@@ -24,8 +25,8 @@ const othersRoute = require('./routes/others.route');
 app.use('/api/v1/user', userRoute);
 app.use('/api/v1/dashboard', dashboardRoute);
 app.use('/api/v1/report', reportRoute);
+app.use('/api/v1/dippingReport', dippingReportRoute);
 app.use('/api/v1/detailsReport', detailsReportRoute)
 app.use('/api/v1/others', othersRoute);
-
 
 module.exports = app;

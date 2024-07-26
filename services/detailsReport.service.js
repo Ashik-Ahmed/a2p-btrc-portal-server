@@ -3,8 +3,8 @@ const { formatDate, formatDateAsPartition } = require("../utils/formatDate");
 
 exports.getReportByMSISDNService = async (filter) => {
 
-    let query = `SELECT * FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.date)}`;
-    console.log(query);
+    let query = `SELECT * FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.filterDate)}`;
+
     // Array to hold the conditions
     const conditions = [];
     // Array to hold the parameter values

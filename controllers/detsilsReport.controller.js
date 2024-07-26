@@ -3,7 +3,7 @@ const { getReportByMSISDNService } = require("../services/detailsReport.service"
 exports.getReportByMSISDN = async (req, res) => {
     try {
 
-        const filter = JSON.parse(req.query?.filter) || {};
+        const filter = JSON.parse(req?.query?.filter) || {};
 
         if (!filter?.msisdn) {
             return res.status(403).json({
@@ -11,7 +11,7 @@ exports.getReportByMSISDN = async (req, res) => {
                 message: "Please provide msisdn"
             })
         }
-        if (!filter?.date) {
+        if (!filter?.filterDate) {
             return res.status(403).json({
                 status: "Failed",
                 message: "Please provide date"
