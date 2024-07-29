@@ -3,8 +3,19 @@ const { formatDate, formatDateAsPartition } = require("../utils/formatDate");
 
 exports.getReportByMSISDNService = async (filter) => {
 
-    let query = `SELECT * FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.filterDate)}`;
+    let query = `SELECT 
+    delivery_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as delivery_date,
+    client_id,
+    cli,
+    bill_msisdn,
+    message_type,
+    ans_type,
+    operator,
+    ans_business_code,
+    source_ip
+    FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.filterDate)}`;
 
+    // let query = `SELECT * FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.filterDate)}`;
     // Array to hold the conditions
     const conditions = [];
     // Array to hold the parameter values

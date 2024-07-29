@@ -141,6 +141,7 @@ exports.answiseReportService = async (filter) => {
 }
 
 exports.cliwiseReportService = async (filter) => {
+    console.log(filter);
     let query = `SELECT 
         TO_CHAR(DATE(delivery_date), 'YYYY-MM-DD') as delivery_date,
         client_id,
