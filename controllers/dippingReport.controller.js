@@ -77,7 +77,7 @@ exports.answiseReport = async (req, res) => {
 
         const filter = JSON.parse(req.query?.filter) || {};
 
-        // console.log(filter);
+        console.log(filter);
 
         if (!filter.start_date || !filter.end_date) {
             return res.status(403).json({

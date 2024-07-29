@@ -89,14 +89,15 @@ FROM
 }
 
 exports.answiseReportService = async (filter) => {
+    console.log("filter: ", filter);
     let query = `SELECT 
-    TO_CHAR(DATE(delivery_date), 'YYYY-MM-DD') as delivery_date,
-    ans_type,
-    operator,
-    SUM(sms_count) as sms_count,
-    SUM(dipping_count) as dipping_count
-FROM 
-    dipping_summary_tbl`;
+        TO_CHAR(DATE(delivery_date), 'YYYY-MM-DD') as delivery_date,
+        ans_type,
+        operator,
+        SUM(sms_count) as sms_count,
+        SUM(dipping_count) as dipping_count
+    FROM 
+        dipping_summary_tbl`;
 
     // Array to hold the conditions
     const conditions = [];
@@ -104,6 +105,14 @@ FROM
     const values = [];
 
     // Build the conditions and values array dynamically
+    if (filter?.ans_type) {
+        conditions.push(`ans_type = $${conditions.length + 1}::text`);
+        values.push(filter?.ans_type);
+    }
+    if (filter?.operator) {
+        conditions.push(`operator = $${conditions.length + 1}::text`);
+        values.push(filter?.operator);
+    }
     if (filter?.start_date && filter?.end_date) {
         conditions.push(`delivery_date BETWEEN $${conditions.length + 1} AND $${conditions.length + 2}`);
         values.push(formatDate(filter?.start_date), formatDate(filter?.end_date));
