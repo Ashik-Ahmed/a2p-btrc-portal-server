@@ -1,6 +1,6 @@
 const express = require('express');
 const verifyToken = require('../middleware/verifyToken');
-const { datewiseReport, aggregatorwiseReport, answiseReport } = require('../controllers/dippingReport.controller');
+const { datewiseReport, aggregatorwiseReport, answiseReport, cliwiseReport } = require('../controllers/dippingReport.controller');
 
 
 const router = express.Router();
@@ -13,6 +13,9 @@ router.route('/aggregatorwiseReport')
 
 router.route('/answiseReport')
     .get(verifyToken, answiseReport)
+
+router.route('/cliwiseReport')
+    .get(verifyToken, cliwiseReport)
 
 
 

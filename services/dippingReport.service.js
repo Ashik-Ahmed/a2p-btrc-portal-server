@@ -139,3 +139,50 @@ exports.answiseReportService = async (filter) => {
     }
 
 }
+
+exports.cliwiseReportService = async (filter) => {
+    let query = `SELECT 
+        TO_CHAR(DATE(delivery_date), 'YYYY-MM-DD') as delivery_date,
+        client_id,
+        cli,
+        operator,
+        SUM(sms_count) as sms_count,
+        SUM(dipping_count) as dipping_count
+    FROM
+        dipping_summary_tbl`;
+
+    // Array to hold the conditions
+    const conditions = [];
+    // Array to hold the parameter values
+    const values = [];
+
+    // Build the conditions and values array dynamically
+    if (filter?.cli) {
+        conditions.push(`cli = $${conditions.length + 1}`);
+        values.push(filter?.cli);
+    }
+    if (filter?.start_date && filter?.end_date) {
+        conditions.push(`delivery_date BETWEEN $${conditions.length + 1} AND $${conditions.length + 2}`);
+        values.push(formatDate(filter?.start_date), formatDate(filter?.end_date));
+    }
+
+    // If there are conditions, append them to the query
+    if (conditions.length > 0) {
+        query += ' WHERE ' + conditions.join(' AND ') + ' ';
+    }
+
+    // Append the GROUP BY clause
+    query += 'GROUP BY DATE(delivery_date), client_id, operator, cli ';
+
+    // Append the ORDER BY clause
+    query += ' ORDER BY delivery_date ASC';
+
+    try {
+        const cliwiseReport = await client.query(query, values);
+        // console.log(cliwiseReport.rows);
+        return cliwiseReport.rows;
+    } catch (err) {
+        console.error('Error executing query', err.message, err.stack);
+        return err?.message;
+    }
+}

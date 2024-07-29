@@ -1,4 +1,4 @@
-const { aggregatorwiseReportService, datewiseReportService, answiseReportService } = require("../services/dippingReport.service");
+const { aggregatorwiseReportService, datewiseReportService, answiseReportService, cliwiseReportService } = require("../services/dippingReport.service");
 
 exports.datewiseReport = async (req, res) => {
     try {
@@ -100,6 +100,42 @@ exports.answiseReport = async (req, res) => {
                 message: "No data found"
             })
         }
+    } catch (error) {
+        res.status(500).json({
+            status: "Failed",
+            message: error.message
+        })
+    }
+}
+
+exports.cliwiseReport = async (req, res) => {
+    try {
+        const filter = JSON.parse(req.query?.filter) || {};
+
+        console.log(filter);
+
+        if (!filter.start_date || !filter.end_date) {
+            return res.status(403).json({
+                status: "Failed",
+                message: "Please provide start_date and end_date"
+            })
+        }
+
+        const cliwiseReport = await cliwiseReportService(filter);
+
+        if (cliwiseReport.length > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: cliwiseReport
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                message: "No data found"
+            })
+        }
+
     } catch (error) {
         res.status(500).json({
             status: "Failed",
