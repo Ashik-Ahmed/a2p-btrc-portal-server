@@ -27,8 +27,11 @@ exports.getAggregatorList = async (req, res) => {
 }
 
 exports.getANSList = async (req, res) => {
+    console.log("query filter: ", req.query?.filter);
     try {
-        const ansList = await getANSListService();
+        const filter = JSON.parse(req?.query?.filter) || {};
+        console.log(filter);
+        const ansList = await getANSListService(filter);
         if (ansList) {
             res.status(200).json({
                 status: "Success",

@@ -5,9 +5,32 @@ exports.getAggregatorListService = async () => {
     return aggregatorList.rows;
 }
 
-exports.getANSListService = async () => {
-    const ansList = await client.query("SELECT DISTINCT operator FROM dipping_summary_tbl");
-    return ansList.rows;
+exports.getANSListService = async (filter) => {
+    let query = "SELECT DISTINCT operator FROM dipping_summary_tbl";
+
+    // Array to hold the conditions
+    const conditions = [];
+    // Array to hold the parameter values
+    const values = [];
+
+    if (filter?.ans_type) {
+        conditions.push(`ans_type = $${conditions.length + 1}`);
+        values.push(filter?.ans_type);
+    }
+
+    // If there are conditions, append them to the query
+    if (conditions.length > 0) {
+        query += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    try {
+        const ansList = await client.query(query, values);
+        // console.log(ansList.rows.length);
+        return ansList.rows;
+    } catch (err) {
+        console.error('Error executing query', err.message, err.stack);
+        return err;
+    }
 }
 
 exports.getCliListService = async (filter) => {
@@ -25,7 +48,6 @@ exports.getCliListService = async (filter) => {
         values.push(filter.client_id);
     }
     if (filter.ans_type) {
-        console.log("inside ans type");
         conditions.push(`ans_type = $${conditions.length + 1}`);
         values.push(filter.ans_type);
     }
