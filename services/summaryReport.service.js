@@ -70,6 +70,7 @@ exports.getSummaryReportService = async (filter) => {
 
 
 exports.getCliSummaryReportService = async (filter) => {
+    console.log(filter);
     let query = `SELECT 
         client_id, 
         bill_msisdn, 
@@ -89,6 +90,21 @@ exports.getCliSummaryReportService = async (filter) => {
     if (filter.client_id) {
         conditions.push(`client_id = $${conditions.length + 1}`);
         values.push(filter.client_id);
+    }
+
+    if (filter.registration_status) {
+        conditions.push(`registration_status = $${conditions.length + 1}`);
+        values.push(filter.registration_status);
+    }
+
+    if (filter.operator) {
+        conditions.push(`operator = $${conditions.length + 1}`);
+        values.push(filter.operator);
+    }
+
+    if (filter.status) {
+        conditions.push(`status = $${conditions.length + 1}`);
+        values.push(filter.status);
     }
 
     // If there are conditions, append them to the query
