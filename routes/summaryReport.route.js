@@ -1,5 +1,5 @@
 const express = require('express');
-const { getSummaryReport } = require('../controllers/report.controller');
+const { getSummaryReport } = require('../controllers/summaryReport.controller');
 const verifyToken = require('../middleware/verifyToken');
 
 

@@ -1,4 +1,4 @@
-const { getSummaryReportService } = require("../services/report.service");
+const { getSummaryReportService } = require("../services/summaryReport.service");
 
 exports.getSummaryReport = async (req, res) => {
     try {
