@@ -67,3 +67,46 @@ exports.getSummaryReportService = async (filter) => {
         return err?.message;
     }
 };
+
+
+exports.getCliSummaryReportService = async (filter) => {
+    let query = `SELECT 
+        client_id, 
+        bill_msisdn, 
+        status, 
+        operator, 
+        registration_status, 
+        COUNT(cli) AS cli_count
+    FROM 
+        aagregator_cli_tbl`;
+
+    // Array to hold the conditions
+    const conditions = [];
+    // Array to hold the parameter values
+    const values = [];
+
+    // Example conditions based on filter object
+    if (filter.client_id) {
+        conditions.push(`client_id = $${conditions.length + 1}`);
+        values.push(filter.client_id);
+    }
+
+    // If there are conditions, append them to the query
+    if (conditions.length > 0) {
+        query += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    // Append the GROUP BY clause
+    query += ' GROUP BY client_id, bill_msisdn, status, operator, registration_status';
+
+    // Append the ORDER BY clause
+    query += ' ORDER BY cli_count DESC';
+
+    try {
+        const cliSummaryReport = await client.query(query, values);
+        // console.log(cliSummaryReport.rows.length);
+        return cliSummaryReport.rows;
+    } catch (error) {
+        return error?.message;
+    }
+};
