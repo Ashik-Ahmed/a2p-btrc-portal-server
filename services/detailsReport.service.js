@@ -47,3 +47,71 @@ exports.getReportByMSISDNService = async (filter) => {
         return err?.message;
     }
 }
+
+
+exports.getCliDetailsReportService = async (filter) => {
+
+    let query = `SELECT 
+        client_id, 
+        cli, 
+        bill_msisdn, 
+        created_at, 
+        updated_at, 
+        status, 
+        operator, 
+        registration_status
+    FROM 
+        aagregator_cli_tbl`;
+
+    // Array to hold the conditions
+    const conditions = [];
+    // Array to hold the parameter values
+    const values = [];
+
+    if (filter?.client_id) {
+        conditions.push(`client_id = $${conditions.length + 1}`);
+        values.push(filter?.client_id);
+    }
+
+    if (filter?.cli) {
+        conditions.push(`cli = $${conditions.length + 1}`);
+        values.push(filter?.cli);
+    }
+
+    if (filter?.operator) {
+        conditions.push(`operator = $${conditions.length + 1}`);
+        values.push(filter?.operator);
+    }
+
+    if (filter?.registration_status) {
+        conditions.push(`registration_status = $${conditions.length + 1}`);
+        values.push(filter?.registration_status);
+    }
+
+    if (filter?.status) {
+        conditions.push(`status = $${conditions.length + 1}`);
+        values.push(filter?.status);
+    }
+
+    if (filter?.bill_msisdn) {
+        conditions.push(`bill_msisdn = $${conditions.length + 1}`);
+        values.push(filter?.bill_msisdn);
+    }
+
+    // If there are conditions, append them to the query
+    if (conditions.length > 0) {
+        query += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    // Append the ORDER BY clause
+    query += ' ORDER BY created_at DESC';
+
+    try {
+        const cliDetailsReport = await client.query(query, values);
+        console.log(cliDetailsReport.rows.length);
+        return cliDetailsReport.rows;
+    } catch (err) {
+        console.error('Error executing query', err.message, err.stack);
+        return err?.message;
+    }
+}
