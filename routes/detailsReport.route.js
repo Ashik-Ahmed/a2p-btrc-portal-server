@@ -1,5 +1,5 @@
 const express = require('express');
-const { getReportByMSISDN, getCliDetailsReport } = require('../controllers/detsilsReport.controller');
+const { getReportByMSISDN, getCliDetailsReport, getIpDetailsReport } = require('../controllers/detsilsReport.controller');
 
 const router = express.Router();
 
@@ -8,6 +8,9 @@ router.route("/msisdn")
 
 router.route("/cliDetailsReport")
     .get(getCliDetailsReport)
+
+router.route("/ipDetailsReport")
+    .get(getIpDetailsReport)
 
 
 

@@ -115,3 +115,48 @@ exports.getCliDetailsReportService = async (filter) => {
         return err?.message;
     }
 }
+
+
+exports.getIpDetailsReportService = async (filter) => {
+
+    let query = `SELECT
+            client_id, 
+            ip_address, 
+            created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as created_at, 
+            updated_at, 
+            status 
+        FROM 
+            public.aagregator_ip_tbl`;
+
+    // Array to hold the conditions
+    const conditions = [];
+    // Array to hold the parameter values
+    const values = [];
+
+    if (filter?.client_id) {
+        conditions.push(`client_id = $${conditions.length + 1}`);
+        values.push(filter?.client_id);
+    }
+
+    if (filter?.status) {
+        conditions.push(`status = $${conditions.length + 1}`);
+        values.push(filter?.status);
+    }
+
+    // If there are conditions, append them to the query
+    if (conditions.length > 0) {
+        query += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    // Append the ORDER BY clause
+    query += ' ORDER BY created_at DESC';
+
+    try {
+        const ipDetailsReport = await client.query(query, values);
+
+        return ipDetailsReport.rows;
+    } catch (err) {
+        console.error('Error executing query', err.message, err.stack);
+        return err?.message;
+    }
+}
