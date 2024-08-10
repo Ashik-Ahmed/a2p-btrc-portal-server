@@ -72,8 +72,7 @@ exports.getSummaryReportService = async (filter) => {
 exports.getCliSummaryReportService = async (filter) => {
     console.log(filter);
     let query = `SELECT 
-        client_id, 
-        bill_msisdn, 
+        client_id,  
         status, 
         operator, 
         registration_status, 
@@ -113,7 +112,7 @@ exports.getCliSummaryReportService = async (filter) => {
     }
 
     // Append the GROUP BY clause
-    query += ' GROUP BY client_id, bill_msisdn, status, operator, registration_status';
+    query += ' GROUP BY client_id, status, operator, registration_status';
 
     // Append the ORDER BY clause
     query += ' ORDER BY cli_count DESC';

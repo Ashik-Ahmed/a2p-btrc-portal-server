@@ -55,7 +55,7 @@ exports.getCliDetailsReportService = async (filter) => {
         client_id, 
         cli, 
         bill_msisdn, 
-        created_at, 
+        created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as created_at,
         updated_at, 
         status, 
         operator, 
