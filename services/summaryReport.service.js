@@ -70,46 +70,51 @@ exports.getSummaryReportService = async (filter) => {
 
 
 exports.getCliSummaryReportService = async (filter) => {
-    // console.log(!!filter.client_id);
-    let query = `SELECT 
-        client_id,  
-        status, 
-        operator, 
-        registration_status, 
-        COUNT(cli) AS cli_count
-    FROM 
-        aagregator_cli_tbl`;
+
+    let query = `
+        SELECT 
+            client_id,   
+            status, 
+            operator, 
+            registration_status, 
+            COUNT(cli) AS cli_count
+        FROM 
+            aagregator_cli_tbl
+    `;
 
     // Array to hold the conditions
     const conditions = [];
     // Array to hold the parameter values
     const values = [];
 
-    // Manually remove the empty client_id value
-    !!filter.client_id == false ? filter.client_id = "" : filter.client_id
-    // conditions.push(`client_id != $${conditions.length + 1}`);
-    // values.push(filter?.client_id)
+    // Counter for parameter placeholders
+    let paramIndex = 1;
 
     // Example conditions based on filter object
     if (filter.client_id) {
-        console.log("filter.client_id: ", filter.client_id);
-        conditions.push(`client_id = $${conditions.length + 1}`);
+        conditions.push(`client_id = $${paramIndex}::text`);
         values.push(filter.client_id);
+        paramIndex++;
+    } else {
+        conditions.push(`client_id != ''`);
     }
 
     if (filter.registration_status) {
-        conditions.push(`registration_status = $${conditions.length + 1}`);
+        conditions.push(`registration_status = $${paramIndex}::text`);
         values.push(filter.registration_status);
+        paramIndex++;
     }
 
     if (filter.operator) {
-        conditions.push(`operator = $${conditions.length + 1}`);
+        conditions.push(`operator = $${paramIndex}::text`);
         values.push(filter.operator);
+        paramIndex++;
     }
 
     if (filter.status) {
-        conditions.push(`status = $${conditions.length + 1}`);
+        conditions.push(`status = $${paramIndex}::text`);
         values.push(filter.status);
+        paramIndex++;
     }
 
     // If there are conditions, append them to the query
@@ -123,11 +128,9 @@ exports.getCliSummaryReportService = async (filter) => {
     // Append the ORDER BY clause
     query += ' ORDER BY cli_count DESC';
 
-    console.log(values);
-
     try {
         const cliSummaryReport = await client.query(query, values);
-        console.log(cliSummaryReport.rows.length);
+        // console.log(cliSummaryReport.rows.length);
         return cliSummaryReport.rows;
     } catch (error) {
         return error?.message;

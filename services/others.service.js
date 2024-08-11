@@ -53,8 +53,7 @@ exports.getCliListService = async (filter) => {
             WHEN cli ~ '^[A-Za-z]' THEN 1
             ELSE 2
         END AS cli_type
-        FROM aagregator_cli_tbl
-    `;
+        FROM aagregator_cli_tbl`;
 
     // Array to hold the conditions
     const conditions = [];
