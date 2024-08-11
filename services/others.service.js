@@ -9,8 +9,8 @@ exports.getAggregatorListService = async () => {
 }
 
 exports.getANSListService = async (filter) => {
-
-    let query = `SELECT DISTINCT operator FROM aagregator_cli_tbl`;
+    console.log(filter);
+    let query = `SELECT DISTINCT operator, ans_type FROM aagregator_cli_tbl`;
 
     // Array to hold the conditions
     const conditions = [];
@@ -60,17 +60,17 @@ exports.getCliListService = async (filter) => {
     values.push(filter?.client_id)
 
     // Build the conditions and values array dynamically
-    if (filter.client_id) {
+    if (filter?.client_id) {
         conditions.push(`client_id = $${conditions.length + 1}`);
-        values.push(filter.client_id);
+        values.push(filter?.client_id);
     }
-    if (filter.ans_type) {
+    if (filter?.ans_type) {
         conditions.push(`ans_type = $${conditions.length + 1}`);
-        values.push(filter.ans_type);
+        values.push(filter?.ans_type);
     }
-    if (filter.operator) {
+    if (filter?.operator) {
         conditions.push(`operator = $${conditions.length + 1}`);
-        values.push(filter.operator);
+        values.push(filter?.operator);
     }
 
     // If there are conditions, append them to the query
@@ -93,7 +93,7 @@ exports.getCliListService = async (filter) => {
 
 
 exports.getCliFromClitableService = async () => {
-    const cliList = await client.query("SELECT DISTINCT cli FROM aagregator_cli_tbl");
+    const cliList = await client.query("SELECT * FROM aagregator_cli_tbl");
     // return cliList.rows;
     const cliArray = cliList.rows.map(row => row.cli);
     return cliArray;
