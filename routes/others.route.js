@@ -1,5 +1,5 @@
 const express = require('express');
-const { getCliList, getAggregatorList, getANSList } = require('../controllers/others.controller');
+const { getCliList, getAggregatorList, getANSList, getCliFromCliTable } = require('../controllers/others.controller');
 const verifyToken = require('../middleware/verifyToken');
 
 
@@ -15,5 +15,8 @@ router.route('/ansList')
 
 router.route('/cliList')
     .get(verifyToken, getCliList)
+
+router.route('/clifromclitable')
+    .get(verifyToken, getCliFromCliTable)
 
 module.exports = router

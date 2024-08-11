@@ -1,17 +1,26 @@
 const client = require("../dbConnection");
 
 exports.getAggregatorListService = async () => {
-    const aggregatorList = await client.query("SELECT DISTINCT client_id FROM dipping_summary_tbl");
+    // const aggregatorList = await client.query("SELECT DISTINCT client_id FROM dipping_summary_tbl");
+    const aggregatorList = await client.query("SELECT DISTINCT client_id FROM aagregator_cli_tbl WHERE client_id != '' ORDER BY client_id ASC");
+
+    console.log(aggregatorList.rows.length);
     return aggregatorList.rows;
 }
 
 exports.getANSListService = async (filter) => {
-    let query = "SELECT DISTINCT operator FROM dipping_summary_tbl";
+
+    let query = `SELECT DISTINCT operator FROM aagregator_cli_tbl`;
 
     // Array to hold the conditions
     const conditions = [];
     // Array to hold the parameter values
     const values = [];
+
+    // Manually remove the empty operator value
+    filter.operator == undefined ? filter.operator = "" : filter.operator
+    conditions.push(`operator != $${conditions.length + 1}`);
+    values.push(filter?.operator)
 
     if (filter?.ans_type) {
         conditions.push(`ans_type = $${conditions.length + 1}`);
@@ -23,9 +32,12 @@ exports.getANSListService = async (filter) => {
         query += ' WHERE ' + conditions.join(' AND ');
     }
 
+    // Append the ORDER BY clause
+    query += ' ORDER BY operator ASC';
+
     try {
         const ansList = await client.query(query, values);
-        // console.log(ansList.rows.length);
+        console.log(ansList.rows.length);
         return ansList.rows;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);
@@ -35,12 +47,17 @@ exports.getANSListService = async (filter) => {
 
 exports.getCliListService = async (filter) => {
 
-    let query = "SELECT DISTINCT cli FROM dipping_summary_tbl";
+    let query = "SELECT DISTINCT cli FROM aagregator_cli_tbl";
 
     // Array to hold the conditions
     const conditions = [];
     // Array to hold the parameter values
     const values = [];
+
+    // Manually remove the empty client_id value
+    filter.client_id == undefined ? filter.client_id = "" : filter.client_id
+    conditions.push(`client_id != $${conditions.length + 1}`);
+    values.push(filter?.client_id)
 
     // Build the conditions and values array dynamically
     if (filter.client_id) {
@@ -65,11 +82,19 @@ exports.getCliListService = async (filter) => {
     query += ' ORDER BY cli DESC';
     // console.log(query, values);
     try {
-        const clList = await client.query(query, values);
-        // console.log(clList.rows.length);
-        return clList.rows;
+        const cliList = await client.query(query, values);
+        // console.log(cliList.rows.length);
+        return cliList.rows;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);
         return err;
     }
+}
+
+
+exports.getCliFromClitableService = async () => {
+    const cliList = await client.query("SELECT DISTINCT cli FROM aagregator_cli_tbl");
+    // return cliList.rows;
+    const cliArray = cliList.rows.map(row => row.cli);
+    return cliArray;
 }

@@ -56,7 +56,7 @@ exports.getCliDetailsReportService = async (filter) => {
         cli, 
         bill_msisdn, 
         created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as created_at,
-        updated_at, 
+        updated_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as updated_at, 
         status, 
         operator, 
         registration_status
@@ -123,7 +123,7 @@ exports.getIpDetailsReportService = async (filter) => {
             client_id, 
             ip_address, 
             created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as created_at, 
-            updated_at, 
+            updated_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as updated_at, 
             status 
         FROM 
             public.aagregator_ip_tbl`;
