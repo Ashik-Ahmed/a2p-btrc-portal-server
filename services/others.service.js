@@ -46,31 +46,43 @@ exports.getANSListService = async (filter) => {
 }
 
 exports.getCliListService = async (filter) => {
-
-    let query = "SELECT DISTINCT cli FROM aagregator_cli_tbl";
+    // console.log("cli filter: ", filter);
+    let query = `
+        SELECT DISTINCT cli,
+        CASE
+            WHEN cli ~ '^[A-Za-z]' THEN 1
+            ELSE 2
+        END AS cli_type
+        FROM aagregator_cli_tbl
+    `;
 
     // Array to hold the conditions
     const conditions = [];
     // Array to hold the parameter values
     const values = [];
 
-    // Manually remove the empty client_id value
-    filter.client_id == undefined ? filter.client_id = "" : filter.client_id
-    conditions.push(`client_id != $${conditions.length + 1}`);
-    values.push(filter?.client_id)
+    // Counter for parameter placeholders
+    let paramIndex = 1;
 
-    // Build the conditions and values array dynamically
     if (filter?.client_id) {
-        conditions.push(`client_id = $${conditions.length + 1}`);
-        values.push(filter?.client_id);
+        // If client_id is provided, add the equality condition
+        conditions.push(`client_id = $${paramIndex}::text`);
+        values.push(filter.client_id);
+        paramIndex++;
+    } else {
+        // If client_id is not provided, add the inequality condition to exclude empty client_id
+        conditions.push(`client_id != ''`);
     }
+
     if (filter?.ans_type) {
-        conditions.push(`ans_type = $${conditions.length + 1}`);
-        values.push(filter?.ans_type);
+        conditions.push(`ans_type = $${paramIndex}::text`);
+        values.push(filter.ans_type);
+        paramIndex++;
     }
     if (filter?.operator) {
-        conditions.push(`operator = $${conditions.length + 1}`);
-        values.push(filter?.operator);
+        conditions.push(`operator = $${paramIndex}::text`);
+        values.push(filter.operator);
+        paramIndex++;
     }
 
     // If there are conditions, append them to the query
@@ -78,18 +90,23 @@ exports.getCliListService = async (filter) => {
         query += ' WHERE ' + conditions.join(' AND ');
     }
 
-    // Append the ORDER BY clause
-    query += ' ORDER BY cli DESC';
+    // Append the ORDER BY clause to first sort alphabetically and then numerically
+    query += ` ORDER BY 
+     CASE 
+        WHEN cli ~ '^[A-Za-z]' THEN 1 
+        ELSE 2 
+     END, 
+     cli ASC`;
+
     // console.log(query, values);
     try {
         const cliList = await client.query(query, values);
-        // console.log(cliList.rows.length);
-        return cliList.rows;
+        return cliList.rows.map(row => ({ cli: row.cli }));
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);
         return err;
     }
-}
+};
 
 
 exports.getCliFromClitableService = async () => {

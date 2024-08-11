@@ -70,7 +70,7 @@ exports.getSummaryReportService = async (filter) => {
 
 
 exports.getCliSummaryReportService = async (filter) => {
-    // console.log(filter);
+    // console.log(!!filter.client_id);
     let query = `SELECT 
         client_id,  
         status, 
@@ -86,12 +86,13 @@ exports.getCliSummaryReportService = async (filter) => {
     const values = [];
 
     // Manually remove the empty client_id value
-    filter.client_id == undefined ? filter.client_id = "" : filter.client_id
-    conditions.push(`client_id != $${conditions.length + 1}`);
-    values.push(filter?.client_id)
+    !!filter.client_id == false ? filter.client_id = "" : filter.client_id
+    // conditions.push(`client_id != $${conditions.length + 1}`);
+    // values.push(filter?.client_id)
 
     // Example conditions based on filter object
     if (filter.client_id) {
+        console.log("filter.client_id: ", filter.client_id);
         conditions.push(`client_id = $${conditions.length + 1}`);
         values.push(filter.client_id);
     }
@@ -121,6 +122,8 @@ exports.getCliSummaryReportService = async (filter) => {
 
     // Append the ORDER BY clause
     query += ' ORDER BY cli_count DESC';
+
+    console.log(values);
 
     try {
         const cliSummaryReport = await client.query(query, values);
