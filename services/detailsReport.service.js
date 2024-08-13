@@ -6,6 +6,7 @@ exports.getReportByMSISDNService = async (filter) => {
     let query = `SELECT 
     delivery_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as delivery_date,
     client_id,
+    msisdn,
     cli,
     bill_msisdn,
     message_type,
