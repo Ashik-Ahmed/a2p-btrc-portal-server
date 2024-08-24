@@ -13,7 +13,7 @@ router.route('/updatePassword/:id')
 
 
 router.route('/')
-    .post(createNewUser)
+    .post(verifyToken, createNewUser)
     .get(verifyToken, getAllUser)
 
 router.route('/:id')
