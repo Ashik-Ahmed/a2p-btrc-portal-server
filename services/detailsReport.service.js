@@ -1,6 +1,70 @@
 const client = require("../dbConnection");
 const { formatDate, formatDateAsPartition } = require("../utils/formatDate");
 
+
+exports.getA2PDetailsReportService = async (filter) => {
+
+    let query = `SELECT 
+    delivery_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as delivery_date,
+    client_id,
+    msisdn,
+    cli,
+    bill_msisdn,
+    message_type,
+    operator,
+    source_ip
+    FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.date)}`;
+
+
+    // Array to hold the conditions
+    const conditions = [];
+    // Array to hold the parameter values
+    const values = [];
+
+    // Build the conditions and values array dynamically
+    if (filter.client_id) {
+        conditions.push(`client_id = $${conditions.length + 1}`);
+        values.push(filter.client_id);
+    }
+    if (filter.operator) {
+        conditions.push(`operator = $${conditions.length + 1}`);
+        values.push(filter.operator);
+    }
+    if (filter.ans_type) {
+        conditions.push(`ans_type = $${conditions.length + 1}`);
+        values.push(filter.ans_type);
+    }
+    if (filter.cli) {
+        conditions.push(`cli = $${conditions.length + 1}`);
+        values.push(filter.cli);
+    }
+    if (filter.message_type) {
+        conditions.push(`message_type = $${conditions.length + 1}`);
+        values.push(filter.message_type);
+    }
+    if (filter.date) {
+        conditions.push(`date(delivery_date) = $${conditions.length + 1}`);
+        values.push(formatDate(filter?.date));
+    }
+
+    // If there are conditions, append them to the query
+    if (conditions.length > 0) {
+        query += ' WHERE ' + conditions.join(' AND ') + ' ';
+    }
+
+    // Append the ORDER BY clause
+    query += ' ORDER BY client_id ASC';
+
+    try {
+        const a2pDetailsReport = await client.query(query, values);
+        console.log(a2pDetailsReport.rows.length);
+        return a2pDetailsReport.rows;
+    } catch (err) {
+        console.error('Error executing query', err.message, err.stack);
+        return err?.message;
+    }
+}
+
 exports.getReportByMSISDNService = async (filter) => {
 
     let query = `SELECT 

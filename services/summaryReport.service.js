@@ -6,7 +6,7 @@ exports.getSummaryReportService = async (filter) => {
     // Base query
     let query = `
         SELECT 
-            TO_CHAR(DATE(delivery_date), 'YYYY-MM-DD') as delivery_date,
+            TO_CHAR(DATE(delivery_date), 'DD-MM-YYYY') as delivery_date,
             client_id,
             operator,
             ans_type,

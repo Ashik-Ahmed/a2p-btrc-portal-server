@@ -1,4 +1,43 @@
-const { getReportByMSISDNService, getCliDetailsReportService, getIpDetailsReportService } = require("../services/detailsReport.service");
+const { getReportByMSISDNService, getCliDetailsReportService, getIpDetailsReportService, getA2PDetailsReportService } = require("../services/detailsReport.service");
+
+
+exports.getA2PDetailsReport = async (req, res) => {
+    try {
+
+        const filter = JSON.parse(req?.query?.filter) || {};
+
+        if (!filter?.date) {
+            {
+                return res.status(403).json({
+                    status: "Failed",
+                    message: "Please provide date"
+                })
+            }
+        }
+
+        const report = await getA2PDetailsReportService(filter);
+
+        if (report.length > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: report
+            })
+        }
+
+        else {
+            res.status(400).json({
+                status: "Failed",
+                message: "No data found"
+            })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: "Failed",
+            message: error.message
+        })
+    }
+}
 
 exports.getReportByMSISDN = async (req, res) => {
     try {
