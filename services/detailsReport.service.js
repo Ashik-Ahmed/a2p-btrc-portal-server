@@ -2,7 +2,7 @@ const client = require("../dbConnection");
 const { formatDate, formatDateAsPartition } = require("../utils/formatDate");
 
 
-exports.getA2PDetailsReportService = async (filter) => {
+exports.getA2PDetailsReportService = async (filter, limit = 10, offset = 0) => {
 
     let query = `SELECT 
     delivery_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as delivery_date,
@@ -12,8 +12,10 @@ exports.getA2PDetailsReportService = async (filter) => {
     bill_msisdn,
     message_type,
     operator,
+    message_count,
+    message_length,
     source_ip
-    FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.date)}`;
+    FROM public.cp_broadcast_history_btrc_tbl2_${formatDateAsPartition(filter?.date)}`;
 
 
     // Array to hold the conditions
@@ -53,11 +55,12 @@ exports.getA2PDetailsReportService = async (filter) => {
     }
 
     // Append the ORDER BY clause
-    query += ' ORDER BY client_id ASC';
+    query += ' ORDER BY client_id ASC LIMIT $' + (conditions.length + 1) + ' OFFSET $' + (conditions.length + 2);
+    values.push(limit, offset);
 
     try {
         const a2pDetailsReport = await client.query(query, values);
-        console.log(a2pDetailsReport.rows.length);
+        // console.log(a2pDetailsReport.rows.length);
         return a2pDetailsReport.rows;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);
@@ -78,9 +81,9 @@ exports.getReportByMSISDNService = async (filter) => {
     operator,
     ans_business_code,
     source_ip
-    FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.filterDate)}`;
+    FROM public.cp_broadcast_history_btrc_tbl2_${formatDateAsPartition(filter?.filterDate)}`;
 
-    // let query = `SELECT * FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.filterDate)}`;
+    // let query = `SELECT * FROM public.cp_broadcast_history_btrc_tbl2_${formatDateAsPartition(filter?.filterDate)}`;
     // Array to hold the conditions
     const conditions = [];
     // Array to hold the parameter values
@@ -105,7 +108,6 @@ exports.getReportByMSISDNService = async (filter) => {
 
     try {
         const msisdnReport = await client.query(query, values);
-
         return msisdnReport.rows;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);
