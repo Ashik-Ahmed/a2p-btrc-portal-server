@@ -1,6 +1,6 @@
 const express = require('express');
 const verifyToken = require('../middleware/verifyToken');
-const { getReportByMSISDN, getCliDetailsReport, getIpDetailsReport, getA2PDetailsReport } = require('../controllers/detsilsReport.controller');
+const { getReportByMSISDN, getCliDetailsReport, getIpDetailsReport, getA2PDetailsReport, getDnDDetailsReport } = require('../controllers/detsilsReport.controller');
 
 const router = express.Router();
 
@@ -15,6 +15,9 @@ router.route("/cliDetailsReport")
 
 router.route("/ipDetailsReport")
     .get(verifyToken, getIpDetailsReport)
+
+router.route("/dndDetailsReport")
+    .get(verifyToken, getDnDDetailsReport)
 
 
 

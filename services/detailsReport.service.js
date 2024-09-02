@@ -15,7 +15,7 @@ exports.getA2PDetailsReportService = async (filter, limit = 10, offset = 0) => {
     message_count,
     message_length,
     source_ip
-    FROM public.cp_broadcast_history_btrc_tbl2_${formatDateAsPartition(filter?.date)}`;
+    FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.date)}`;
 
 
     // Array to hold the conditions
@@ -81,9 +81,9 @@ exports.getReportByMSISDNService = async (filter) => {
     operator,
     ans_business_code,
     source_ip
-    FROM public.cp_broadcast_history_btrc_tbl2_${formatDateAsPartition(filter?.filterDate)}`;
+    FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.filterDate)}`;
 
-    // let query = `SELECT * FROM public.cp_broadcast_history_btrc_tbl2_${formatDateAsPartition(filter?.filterDate)}`;
+    // let query = `SELECT * FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.filterDate)}`;
     // Array to hold the conditions
     const conditions = [];
     // Array to hold the parameter values
@@ -226,4 +226,66 @@ exports.getIpDetailsReportService = async (filter) => {
         console.error('Error executing query', err.message, err.stack);
         return err?.message;
     }
+}
+
+exports.getDnDDetailsReportService = async (filter) => {
+
+    let query = `SELECT
+             id,
+             msisdn,
+             cli,
+             dnd_flag,
+             opt_in_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as opt_in_date,
+             opt_out_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as opt_out_date,
+             created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as created_at,
+             updated_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as updated_at
+        FROM 
+            dnd_tbl`;
+
+    // Array to hold the conditions
+    const conditions = [];
+    // Array to hold the parameter values
+    const values = [];
+
+    if (filter?.msisdn) {
+        conditions.push(`msisdn = $${conditions.length + 1}`);
+        values.push(filter?.msisdn);
+    }
+
+    if (filter?.cli) {
+        conditions.push(`cli = $${conditions.length + 1}`);
+        values.push(filter?.cli);
+    }
+
+    if (filter?.dnd_flag) {
+        conditions.push(`dnd_flag = $${conditions.length + 1}`);
+        values.push(filter?.dnd_flag);
+    }
+
+    if (filter?.opt_in_date) {
+        conditions.push(`opt_in_date = $${conditions.length + 1}`);
+        values.push(filter?.opt_in_date);
+    }
+
+    if (filter?.opt_out_date) {
+        conditions.push(`opt_out_date = $${conditions.length + 1}`);
+        values.push(filter?.opt_out_date);
+    }
+
+    // If there are conditions, append them to the query
+    if (conditions.length > 0) {
+        query += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    // Append the ORDER BY clause
+    query += ' ORDER BY id ASC';
+
+    try {
+        const dndDetailsReport = await client.query(query, values);
+        return dndDetailsReport.rows;
+    } catch (err) {
+        console.error('Error executing query', err.message, err.stack);
+        return err?.message;
+    }
+
 }

@@ -1,4 +1,4 @@
-const { getReportByMSISDNService, getCliDetailsReportService, getIpDetailsReportService, getA2PDetailsReportService } = require("../services/detailsReport.service");
+const { getReportByMSISDNService, getCliDetailsReportService, getIpDetailsReportService, getA2PDetailsReportService, getDnDDetailsReportService } = require("../services/detailsReport.service");
 
 
 exports.getA2PDetailsReport = async (req, res) => {
@@ -122,6 +122,38 @@ exports.getIpDetailsReport = async (req, res) => {
             res.status(200).json({
                 status: "Success",
                 data: ipDetailsReport
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                message: "No data found"
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            status: "Failed",
+            message: error.message
+        })
+    }
+}
+
+exports.getDnDDetailsReport = async (req, res) => {
+    try {
+
+        let filter = {};
+
+        if (req?.query?.filter) {
+            filter = JSON.parse(req?.query?.filter)
+        }
+
+
+        const dndDetailsReport = await getDnDDetailsReportService(filter);
+
+        if (dndDetailsReport.length > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: dndDetailsReport
             })
         }
         else {
