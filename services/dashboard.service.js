@@ -8,7 +8,7 @@ exports.getDashboardWeeklyDataService = async () => {
 FROM 
     public.dashboard_tbl
 WHERE 
-    date >= current_date - 7 
+    date >= current_date - 6 
     AND date <= current_date
 GROUP BY 
     DATE(date)
