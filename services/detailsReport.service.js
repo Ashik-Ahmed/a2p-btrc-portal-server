@@ -4,6 +4,8 @@ const { formatDate, formatDateAsPartition } = require("../utils/formatDate");
 
 exports.getA2PDetailsReportService = async (filter, limit = 10, offset = 0) => {
 
+    // need to add message_count and message_legth in database *****
+
     let query = `SELECT 
     delivery_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Dhaka' as delivery_date,
     client_id,
@@ -12,8 +14,6 @@ exports.getA2PDetailsReportService = async (filter, limit = 10, offset = 0) => {
     bill_msisdn,
     message_type,
     operator,
-    message_count,
-    message_length,
     source_ip
     FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.date)}`;
 

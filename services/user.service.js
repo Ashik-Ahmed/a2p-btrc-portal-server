@@ -8,8 +8,7 @@ exports.createNewUserService = async (userData) => {
 
 exports.getAllUserService = async (data) => {
     // const users = await client.query("SELECT * FROM users_tbl");
-    const users = await client.query("SELECT user_id, name, email, phone, address, role, photo, status, page_access, created_at FROM users_tbl"
-    );
+    const users = await client.query("SELECT user_id, name, email, phone, address, role, photo, status, page_access, created_at FROM users_tbl");
     return users.rows;
 }
 
@@ -19,7 +18,7 @@ exports.getUserByIdService = async (id) => {
 }
 
 exports.updatePasswordByIdService = async (id, password) => {
-    console.log("from service: ", id, password);
+    // console.log("from service: ", id, password);
     const result = await client.query("UPDATE users_tbl SET password = $1 WHERE user_id = $2", [password, id]);
     return result;
 }
@@ -66,6 +65,11 @@ exports.updateUserByIdService = async (id, userData) => {
         conditions.push(`page_access = $${conditions.length + 1}`);
         values.push(userData?.page_access);
     }
+    // if (userData?.last_login) {
+    //     conditions.push(`last_login = $${conditions.length + 1}`);
+    //     values.push(userData?.last_login);
+    // }
+
     if (conditions.length > 0) {
         query += conditions.join(', ');
     }

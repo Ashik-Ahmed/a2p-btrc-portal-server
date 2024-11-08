@@ -5,7 +5,7 @@ exports.getA2PDetailsReport = async (req, res) => {
     try {
 
         const filter = JSON.parse(req?.query?.filter) || {};
-
+        console.log(filter);
         if (!filter?.date) {
             {
                 return res.status(403).json({
@@ -146,7 +146,6 @@ exports.getDnDDetailsReport = async (req, res) => {
         if (req?.query?.filter) {
             filter = JSON.parse(req?.query?.filter)
         }
-
 
         const dndDetailsReport = await getDnDDetailsReportService(filter);
 

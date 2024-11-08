@@ -207,7 +207,7 @@ exports.deleteUserById = async (req, res) => {
 }
 
 exports.userLogin = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     try {
         const { email, password } = req.body;
         // console.log(email, password);
@@ -238,6 +238,10 @@ exports.userLogin = async (req, res) => {
                         accessToken: token
                     }
                 })
+
+                // update user last login time
+                // await updateUserByIdService(user.user_id, { last_login: new Date() });
+
             }
             else {
                 res.status(400).json({

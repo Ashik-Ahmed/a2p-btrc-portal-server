@@ -1,4 +1,0 @@
-1. Find messages with MSISDN from detail data table
-=> SELECT * FROM public.cp_broadcast_history_btrc_tbl_2024_07_15
-where MSISDN='8801730190875'
-and date(delivery_date) between '2024-07-15' and '2024-07-15';
