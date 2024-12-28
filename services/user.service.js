@@ -65,9 +65,9 @@ exports.updateUserByIdService = async (id, userData) => {
         conditions.push(`page_access = $${conditions.length + 1}`);
         values.push(userData?.page_access);
     }
-    // if (userData?.last_login) {
-    //     conditions.push(`last_login = $${conditions.length + 1}`);
-    //     values.push(userData?.last_login);
+    // if (userData?.login_history) {
+    //     conditions.push(`login_history = $${conditions.length + 1}`);
+    //     values.push(userData?.login_history);
     // }
 
     if (conditions.length > 0) {

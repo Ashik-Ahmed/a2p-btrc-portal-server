@@ -2,7 +2,7 @@ const client = require("../dbConnection");
 const { formatDate, formatDateAsPartition } = require("../utils/formatDate");
 
 
-exports.getA2PDetailsReportService = async (filter, limit = 10, offset = 0) => {
+exports.getA2PDetailsReportService = async (filter, limit = 10000, offset = 0) => {
 
     // need to add message_count and message_legth in database *****
 
