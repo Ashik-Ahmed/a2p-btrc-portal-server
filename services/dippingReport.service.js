@@ -190,9 +190,10 @@ exports.cliwiseReportService = async (filter) => {
 
 
 exports.messagetypewiseReportService = async (filter) => {
-    console.log("Hello message");
+
     let query = `SELECT 
         TO_CHAR(DATE(delivery_date), 'YYYY-MM-DD') as delivery_date,
+        message_type,
         SUM(sms_count) as sms_count,
         SUM(dipping_count) as dipping_count
     FROM 
@@ -223,10 +224,10 @@ exports.messagetypewiseReportService = async (filter) => {
     }
 
     // Append the GROUP BY clause
-    query += 'GROUP BY DATE(delivery_date) ';
+    query += 'GROUP BY DATE(delivery_date), message_type ';
 
     // Append the ORDER BY clause
-    query += ' ORDER BY delivery_date ASC';
+    query += ' ORDER BY delivery_date, message_type ASC';
 
     try {
         const messagetypewiseReport = await client.query(query, values);
