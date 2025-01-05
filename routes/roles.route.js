@@ -1,6 +1,6 @@
 const express = require('express');
 const verifyToken = require('../middleware/verifyToken');
-const { createNewRoleService } = require('../services/roles.service');
+const { createNewRoleService, getAllRoleService } = require('../services/roles.service');
 
 const router = express.Router();
 
@@ -8,4 +8,4 @@ const router = express.Router();
 
 router.route('/')
     .post(verifyToken, createNewRoleService)
-    .get()
+    .get(verifyToken, getAllRoleService)

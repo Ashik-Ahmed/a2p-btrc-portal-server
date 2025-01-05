@@ -8,3 +8,9 @@ exports.createNewRoleService = async (roleData) => {
 
     return result.rows[0];
 }
+
+
+exports.getAllRoleService = async () => {
+    const result = await client.query("SELECT * FROM roles_tbl");
+    return result.rows;
+}
