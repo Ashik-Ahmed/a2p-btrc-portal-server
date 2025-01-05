@@ -9,3 +9,7 @@ const router = express.Router();
 router.route('/')
     .post(verifyToken, createNewRoleService)
     .get(verifyToken, getAllRoleService)
+
+
+
+module.exports = router;
