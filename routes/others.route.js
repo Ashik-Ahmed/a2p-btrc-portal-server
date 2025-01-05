@@ -9,7 +9,6 @@ const router = express.Router();
 router.route('/aggregatorList')
     .get(verifyToken, getAggregatorList)
 
-
 router.route('/ansList')
     .get(verifyToken, getANSList)
 
