@@ -14,3 +14,9 @@ exports.getAllRoleService = async () => {
     const result = await client.query("SELECT * FROM roles_tbl");
     return result.rows;
 }
+
+
+exports.getRoleByIdService = async (id) => {
+    const result = await client.query("SELECT * FROM roles_tbl WHERE role_id = $1", [id]);
+    return result.rows[0];
+}
