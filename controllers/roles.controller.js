@@ -1,4 +1,4 @@
-const { createNewRoleService, getAllRoleService, getRoleByIdService } = require("../services/roles.service");
+const { createNewRoleService, getAllRoleService, getRoleByIdService, updateRoleByIdService } = require("../services/roles.service");
 
 exports.createNewRole = async (req, res) => {
     try {
@@ -59,6 +59,33 @@ exports.getRoleById = async (req, res) => {
             res.status(200).json({
                 status: "Success",
                 data: role,
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                message: "No role found"
+            })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: "Failed",
+            message: error.message
+        })
+    }
+}
+
+exports.updateRoleById = async (req, res) => {
+    try {
+        const result = await updateRoleByIdService(req.params.id, req.body);
+        if (result?.rowCount > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: {
+                    command: result.command,
+                    rowCount: result.rowCount
+                }
             })
         }
         else {
