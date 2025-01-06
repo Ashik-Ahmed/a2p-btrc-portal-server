@@ -25,40 +25,40 @@ exports.getRoleByIdService = async (id) => {
 
 
 exports.updateRoleByIdService = async (id, roleData) => {
-    console.log("update role called");
-    // let query = "UPDATE roles_tbl SET ";
-    // const conditions = [];
-    // const values = [];
 
-    // if (roleData?.role_name) {
-    //     conditions.push(`role_name = $${conditions.length + 1}`);
-    //     values.push(roleData?.role_name);
-    // }
-    // if (roleData?.users) {
-    //     conditions.push(`users = $${conditions.length + 1}`);
-    //     values.push(roleData?.users);
-    // }
-    // if (roleData?.page_access) {
-    //     conditions.push(`page_access = $${conditions.length + 1}`);
-    //     values.push(roleData?.page_access);
-    // }
-    // if (roleData?.updated_by) {
-    //     conditions.push(`updated_by = $${conditions.length + 1}`);
-    //     values.push(roleData?.updated_by);
-    // }
-    // if (roleData?.updated_at) {
-    //     conditions.push(`updated_at = $${conditions.length + 1}`);
-    //     values.push(roleData?.updated_at);
-    // }
+    let query = "UPDATE roles_tbl SET ";
+    const conditions = [];
+    const values = [];
 
-    // if (conditions.length > 0) {
-    //     query += conditions.join(", ");
-    // }
+    if (roleData?.role_name) {
+        conditions.push(`role_name = $${conditions.length + 1}`);
+        values.push(roleData?.role_name);
+    }
+    if (roleData?.users) {
+        conditions.push(`users = $${conditions.length + 1}`);
+        values.push(roleData?.users);
+    }
+    if (roleData?.page_access) {
+        conditions.push(`page_access = $${conditions.length + 1}`);
+        values.push(roleData?.page_access);
+    }
+    if (roleData?.updated_by) {
+        conditions.push(`updated_by = $${conditions.length + 1}`);
+        values.push(roleData?.updated_by);
+    }
+    if (roleData?.updated_at) {
+        conditions.push(`updated_at = $${conditions.length + 1}`);
+        values.push(roleData?.updated_at);
+    }
 
-    // query += ` WHERE role_id = $${conditions.length + 1}`;
-    // values.push(id);
+    if (conditions.length > 0) {
+        query += conditions.join(", ");
+    }
 
-    // const result = await client.query(query, values);
+    query += ` WHERE role_id = $${conditions.length + 1}`;
+    values.push(id);
 
-    // return result;
+    const result = await client.query(query, values);
+
+    return result;
 }
