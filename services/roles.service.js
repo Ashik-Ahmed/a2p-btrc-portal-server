@@ -1,3 +1,5 @@
+const client = require("../dbConnection");
+
 exports.createNewRoleService = async (roleData) => {
 
     const { role_name, created_by, created_at, updated_by, updated_at } = roleData;

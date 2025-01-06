@@ -1,10 +1,10 @@
 const { createNewRoleService, getAllRoleService, getRoleByIdService } = require("../services/roles.service");
 
-exports.createNewRole = (req, res) => {
+exports.createNewRole = async (req, res) => {
     try {
         const roleData = req.body;
 
-        const newRole = createNewRoleService(roleData);
+        const newRole = await createNewRoleService(roleData);
 
         if (newRole) {
             res.status(200).json({
@@ -18,7 +18,6 @@ exports.createNewRole = (req, res) => {
                 message: "Failed! Please try again"
             })
         }
-
     } catch (error) {
         res.status(500).json({
             status: "Failed",
