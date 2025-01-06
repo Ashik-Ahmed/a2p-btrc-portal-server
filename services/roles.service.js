@@ -62,3 +62,9 @@ exports.updateRoleByIdService = async (id, roleData) => {
 
     return result;
 }
+
+
+exports.deleteRoleByIdService = async (id) => {
+    const result = await client.query("DELETE FROM roles_tbl WHERE role_id = $1", [id]);
+    return result;
+}

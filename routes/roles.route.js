@@ -1,6 +1,6 @@
 const express = require('express');
 const verifyToken = require('../middleware/verifyToken');
-const { getRoleById, getAllRole, createNewRole, updateRoleById } = require('../controllers/roles.controller');
+const { getRoleById, getAllRole, createNewRole, updateRoleById, deleteRoleById } = require('../controllers/roles.controller');
 
 const router = express.Router();
 
@@ -14,6 +14,7 @@ router.route('/')
 router.route('/:id')
     .get(verifyToken, getRoleById)
     .patch(verifyToken, updateRoleById)
+    .delete(verifyToken, deleteRoleById)
 
 
 
