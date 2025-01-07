@@ -240,7 +240,7 @@ exports.userLogin = async (req, res) => {
                 })
 
                 // update user last login time
-                // await updateUserByIdService(user.user_id, { last_login: new Date() });
+                await updateUserByIdService(user.user_id, { last_login: new Date() });
 
             }
             else {

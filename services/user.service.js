@@ -24,7 +24,7 @@ exports.updatePasswordByIdService = async (id, password) => {
 }
 
 exports.updateUserByIdService = async (id, userData) => {
-
+    console.log("from service: ", id, userData);
     let query = "UPDATE users_tbl SET ";
     const conditions = [];
     const values = [];
@@ -65,10 +65,10 @@ exports.updateUserByIdService = async (id, userData) => {
         conditions.push(`page_access = $${conditions.length + 1}`);
         values.push(userData?.page_access);
     }
-    // if (userData?.login_history) {
-    //     conditions.push(`login_history = $${conditions.length + 1}`);
-    //     values.push(userData?.login_history);
-    // }
+    if (userData?.last_login) {
+        conditions.push(`login_history = array_append(login_history, $${conditions.length + 1})`);
+        values.push(userData?.last_login);
+    }
 
     if (conditions.length > 0) {
         query += conditions.join(', ');
