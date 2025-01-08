@@ -1,4 +1,4 @@
-const { createNewRoleService, getAllRoleService, getRoleByIdService, updateRoleByIdService, deleteRoleByIdService } = require("../services/roles.service");
+const { createNewRoleService, getAllRoleService, getRoleByIdService, updateRoleByIdService, deleteRoleByIdService, getAllPageService } = require("../services/roles.service");
 
 exports.createNewRole = async (req, res) => {
     try {
@@ -121,6 +121,31 @@ exports.deleteRoleById = async (req, res) => {
             })
         }
 
+    } catch (error) {
+        res.status(500).json({
+            status: "Failed",
+            message: error.message
+        })
+    }
+}
+
+exports.getAllPage = async (req, res) => {
+    try {
+
+        const pages = await getAllPageService(req.body);
+
+        if (pages.length > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: pages
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                message: "No page found"
+            })
+        }
     } catch (error) {
         res.status(500).json({
             status: "Failed",

@@ -68,3 +68,19 @@ exports.deleteRoleByIdService = async (id) => {
     const result = await client.query("DELETE FROM roles_tbl WHERE role_id = $1", [id]);
     return result;
 }
+
+
+exports.createPageService = async (pageData) => {
+    const { page_serial, title, url, visibility, status, created_by, updated_by, updated_at } = pageData;
+
+    let query = `INSERT INTO pages_tbl (page_serial, title, url, visibility, status, created_by, updated_by, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
+
+    const result = await client.query(query, [page_serial, title, url, visibility, status, created_by, updated_by, updated_at]);
+
+    return result.rows[0];
+}
+
+exports.getAllPageService = async () => {
+    const result = await client.query("SELECT * FROM pages_tbl");
+    return result.rows;
+}

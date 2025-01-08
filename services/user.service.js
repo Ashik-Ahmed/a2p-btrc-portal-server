@@ -24,7 +24,7 @@ exports.updatePasswordByIdService = async (id, password) => {
 }
 
 exports.updateUserByIdService = async (id, userData) => {
-    console.log("from service: ", id, userData);
+
     let query = "UPDATE users_tbl SET ";
     const conditions = [];
     const values = [];
