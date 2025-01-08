@@ -1,4 +1,4 @@
-const { createNewRoleService, getAllRoleService, getRoleByIdService, updateRoleByIdService, deleteRoleByIdService, getAllPageService } = require("../services/roles.service");
+const { createNewRoleService, getAllRoleService, getRoleByIdService, updateRoleByIdService, deleteRoleByIdService, getAllPageService, createPageService } = require("../services/roles.service");
 
 exports.createNewRole = async (req, res) => {
     try {
@@ -109,6 +109,33 @@ exports.deleteRoleById = async (req, res) => {
         const result = await deleteRoleByIdService(req.params.id);
 
         if (result?.rowCount > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: result
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                message: "Failed! Please try again"
+            })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: "Failed",
+            message: error.message
+        })
+    }
+}
+
+
+exports.createPage = async (req, res) => {
+    try {
+        const pageData = req.body;
+        const result = await createPageService(pageData);
+        console.log("insert result: ", result);
+        if (result?.page_id > 0) {
             res.status(200).json({
                 status: "Success",
                 data: result
