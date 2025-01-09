@@ -5,7 +5,7 @@ exports.createNewRole = async (req, res) => {
         const roleData = req.body;
 
         const newRole = await createNewRoleService(roleData);
-
+        console.log(newRole);
         if (newRole) {
             res.status(200).json({
                 status: "Success",
@@ -134,7 +134,7 @@ exports.createPage = async (req, res) => {
     try {
         const pageData = req.body;
         const result = await createPageService(pageData);
-        console.log("insert result: ", result);
+
         if (result?.page_id > 0) {
             res.status(200).json({
                 status: "Success",
@@ -147,7 +147,6 @@ exports.createPage = async (req, res) => {
                 message: "Failed! Please try again"
             })
         }
-
     } catch (error) {
         res.status(500).json({
             status: "Failed",

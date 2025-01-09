@@ -1,13 +1,13 @@
 const client = require("../dbConnection");
 
 exports.createNewRoleService = async (roleData) => {
+    console.log(roleData);
+    const { role_id = 1212, role_name, page_access, created_by, created_at } = roleData;
 
-    const { role_name, created_by, created_at, updated_by, updated_at } = roleData;
+    let query = `INSERT INTO roles_tbl (role_id, role_name, page_access, created_by, created_at) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
 
-    let query = `INSERT INTO roles_tbl (role_name, created_by, created_at, updated_by, updated_at) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
-
-    const result = await client.query(query, [role_name, created_by, created_at, updated_by, updated_at]);
-
+    const result = await client.query(query, [role_id, role_name, page_access, created_by, created_at]);
+    console.log(result);
     return result.rows[0];
 }
 
@@ -81,6 +81,16 @@ exports.createPageService = async (pageData) => {
 }
 
 exports.getAllPageService = async () => {
-    const result = await client.query("SELECT * FROM pages_tbl");
+    const result = await client.query(` 
+        SELECT 
+        p.*,
+        u.name AS created_by_name
+    FROM 
+        pages_tbl p
+    LEFT JOIN 
+        users_tbl u 
+    ON 
+        p.created_by = u.user_id
+        `);
     return result.rows;
 }
