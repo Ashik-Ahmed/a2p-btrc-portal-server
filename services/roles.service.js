@@ -137,6 +137,61 @@ exports.getAllPageService = async () => {
     return result.rows;
 }
 
+exports.updatePageByIdService = async (id, pageData) => {
+
+    let query = "UPDATE pages_tbl SET ";
+    const conditions = [];
+    const values = [];
+
+    if (pageData?.page_serial) {
+        conditions.push(`page_serial = $${conditions.length + 1}`);
+        values.push(pageData?.page_serial);
+    }
+    if (pageData?.label) {
+        conditions.push(`label = $${conditions.length + 1}`);
+        values.push(pageData?.label);
+    }
+    if (pageData?.url) {
+        conditions.push(`url = $${conditions.length + 1}`);
+        values.push(pageData?.url);
+    }
+    if (pageData?.visibility) {
+        conditions.push(`visibility = $${conditions.length + 1}`);
+        values.push(pageData?.visibility);
+    }
+    if (pageData?.page_status) {
+        conditions.push(`page_status = $${conditions.length + 1}`);
+        values.push(pageData?.page_status);
+    }
+    if (pageData?.group_label) {
+        conditions.push(`group_label = $${conditions.length + 1}`);
+        values.push(pageData?.group_label);
+    }
+    if (pageData?.parent_id) {
+        conditions.push(`parent_id = $${conditions.length + 1}`);
+        values.push(pageData?.parent_id);
+    }
+    if (pageData?.updated_by) {
+        conditions.push(`updated_by = $${conditions.length + 1}`);
+        values.push(pageData?.updated_by);
+    }
+    if (pageData?.updated_at) {
+        conditions.push(`updated_at = $${conditions.length + 1}`);
+        values.push(pageData?.updated_at);
+    }
+
+    if (conditions.length > 0) {
+        query += conditions.join(", ");
+    }
+
+    query += ` WHERE page_id = $${conditions.length + 1}`;
+    values.push(id);
+
+    const result = await client.query(query, values);
+
+    return result;
+}
+
 exports.deletePageByIdService = async (id) => {
     const result = await client.query("DELETE FROM pages_tbl WHERE page_id = $1", [id]);
     return result;

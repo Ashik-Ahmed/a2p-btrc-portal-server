@@ -180,6 +180,7 @@ exports.getAllPage = async (req, res) => {
     }
 }
 
+
 exports.deletePageById = async (req, res) => {
     try {
         const result = await deletePageByIdService(req.params.id);
