@@ -112,11 +112,11 @@ exports.deleteRoleByIdService = async (id) => {
 
 
 exports.createPageService = async (pageData) => {
-    const { page_serial, title, url, child_pages, visibility, status, created_by, updated_by, updated_at } = pageData;
+    const { page_serial, label, url, visibility, page_status, group_label, created_by } = pageData;
 
-    let query = `INSERT INTO pages_tbl (page_serial, title, url, child_pages, visibility, status, created_by, updated_by, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`;
+    let query = `INSERT INTO pages_tbl (page_serial, label, url, visibility, page_status, group_label,  created_by) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
 
-    const result = await client.query(query, [page_serial, title, url, child_pages, visibility, status, created_by, updated_by, updated_at]);
+    const result = await client.query(query, [page_serial, label, url, visibility, page_status, group_label, created_by]);
 
     return result.rows[0];
 }
@@ -133,6 +133,7 @@ exports.getAllPageService = async () => {
     ON 
         p.created_by = u.user_id
         `);
+    // console.log(result);
     return result.rows;
 }
 
