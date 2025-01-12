@@ -180,6 +180,32 @@ exports.getAllPage = async (req, res) => {
     }
 }
 
+exports.updatePageById = async (req, res) => {
+    try {
+        const result = await updatePageByIdService(req.params.id, req.body);
+
+        if (result?.rowCount > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: {
+                    command: result.command,
+                    rowCount: result.rowCount
+                }
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                message: "Failed! Please try again"
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            status: "Failed",
+            message: error.message
+        })
+    }
+}
 
 exports.deletePageById = async (req, res) => {
     try {
