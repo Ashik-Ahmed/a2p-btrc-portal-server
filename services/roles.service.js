@@ -18,7 +18,7 @@ exports.getAllRoleService = async () => {
     jsonb_agg(
         jsonb_build_object(
             'page_id', p.page_id,
-            'title', p.title,
+            'title', p.label,
             'url', p.url,
             'serial', p.page_serial
         )
@@ -34,6 +34,7 @@ GROUP BY
     
 ORDER BY 
     r.role_id ASC`);
+
     return result.rows;
 }
 
@@ -132,6 +133,8 @@ exports.getAllPageService = async () => {
         users_tbl u 
     ON 
         p.created_by = u.user_id
+    ORDER BY 
+        p.page_id ASC
         `);
     // console.log(result);
     return result.rows;

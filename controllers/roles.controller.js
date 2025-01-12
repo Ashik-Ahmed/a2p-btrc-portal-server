@@ -1,4 +1,4 @@
-const { createNewRoleService, getAllRoleService, getRoleByIdService, updateRoleByIdService, deleteRoleByIdService, getAllPageService, createPageService, deletePageByIdService } = require("../services/roles.service");
+const { createNewRoleService, getAllRoleService, getRoleByIdService, updateRoleByIdService, deleteRoleByIdService, getAllPageService, createPageService, deletePageByIdService, updatePageByIdService } = require("../services/roles.service");
 
 exports.createNewRole = async (req, res) => {
     try {
