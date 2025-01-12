@@ -19,7 +19,8 @@ exports.getAllRoleService = async () => {
         jsonb_build_object(
             'page_id', p.page_id,
             'title', p.title,
-            'url', p.url
+            'url', p.url,
+            'serial', p.page_serial
         )
     ) AS allowed_pages
 FROM 
@@ -44,7 +45,8 @@ exports.getRoleByIdService = async (id) => {
         jsonb_build_object(
             'page_id', p.page_id,
             'title', p.title,
-            'url', p.url
+            'url', p.url,
+            'serial', p.page_serial
         )
     ) AS allowed_pages
 FROM 
@@ -132,4 +134,9 @@ exports.getAllPageService = async () => {
         p.created_by = u.user_id
         `);
     return result.rows;
+}
+
+exports.deletePageByIdService = async (id) => {
+    const result = await client.query("DELETE FROM pages_tbl WHERE page_id = $1", [id]);
+    return result;
 }
