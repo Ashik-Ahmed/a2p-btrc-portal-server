@@ -1,12 +1,12 @@
 const express = require('express');
-const { getDashboardWeeklyData, getTopAggregator, getTopANS } = require('../controllers/dashboard.controller');
+const { getTopAggregator, getTopANS, getDashboardMonthlyData } = require('../controllers/dashboard.controller');
 const verifyToken = require('../middleware/verifyToken');
 
 const router = express.Router();
 
 
-router.route('/weeklyData')
-    .get(verifyToken, getDashboardWeeklyData)
+router.route('/monthlyData')
+    .get(verifyToken, getDashboardMonthlyData)
 
 router.route('/topAggregator')
     .get(verifyToken, getTopAggregator)

@@ -1,8 +1,8 @@
-const { getDashboardWeeklyDataService, getTopAggregatorService, getTopANSService } = require("../services/dashboard.service");
+const { getTopAggregatorService, getTopANSService, getDashboardMonthlyDataService } = require("../services/dashboard.service");
 
-exports.getDashboardWeeklyData = async (req, res) => {
+exports.getDashboardMonthlyData = async (req, res) => {
     try {
-        const dashboardData = await getDashboardWeeklyDataService();
+        const dashboardData = await getDashboardMonthlyDataService();
         // console.log(dashboardData);
         if (dashboardData) {
             res.status(200).json({

@@ -1,21 +1,21 @@
 const client = require("../dbConnection");
 
-exports.getDashboardWeeklyDataService = async () => {
-    const dashboardWeeklyData = await client.query(`SELECT 
+exports.getDashboardMonthlyDataService = async () => {
+    const dashboardMonthlyData = await client.query(`SELECT 
     TO_CHAR(DATE(date), 'YYYY-MM-DD') as date,
     SUM(smscount) as total_sms,
     SUM(dippingcount) as total_dipping
 FROM 
     public.dashboard_tbl
 WHERE 
-    date >= current_date - 6 
+    date >= current_date - 30 
     AND date <= current_date
 GROUP BY 
     DATE(date)
 ORDER BY 
     DATE(date) DESC`);
 
-    return dashboardWeeklyData.rows;
+    return dashboardMonthlyData.rows;
 }
 
 
