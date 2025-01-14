@@ -18,9 +18,9 @@ exports.getAllRoleService = async () => {
     jsonb_agg(
         jsonb_build_object(
             'page_id', p.page_id,
-            'title', p.label,
+            'label', p.label,
             'url', p.url,
-            'serial', p.page_serial
+            'page_serial', p.page_serial
         )
     ) AS allowed_pages
 FROM 
