@@ -123,20 +123,20 @@ exports.createPageService = async (pageData) => {
 }
 
 exports.getAllPageService = async () => {
-    const result = await client.query(` 
+    const result = await client.query(`
         SELECT 
-        p.*,
-        u.name AS created_by_name
-    FROM 
-        pages_tbl p
-    LEFT JOIN 
-        users_tbl u 
-    ON 
-        p.created_by = u.user_id
-    ORDER BY 
-        p.page_id ASC
-        `);
-    // console.log(result);
+            p.*,
+            u.name AS created_by_name
+        FROM 
+            pages_tbl p
+        LEFT JOIN 
+            users_tbl u 
+        ON 
+            p.created_by = u.user_id
+        ORDER BY 
+            p.page_id ASC
+    `);
+
     return result.rows;
 }
 
