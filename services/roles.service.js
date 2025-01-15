@@ -45,10 +45,14 @@ exports.getRoleByIdService = async (id) => {
     jsonb_agg(
         jsonb_build_object(
             'page_id', p.page_id,
-            'title', p.title,
+            'label', p.label,
             'url', p.url,
-            'serial', p.page_serial
+            'parent_id', p.parent_id,
+            'page_serial', p.page_serial,
+            'group_serial', p.group_serial,
+            'group_label', p.group_label
         )
+        ORDER BY p.group_serial, p.page_serial -- Order inside jsonb_agg
     ) AS allowed_pages
 FROM 
     public.roles_tbl r
@@ -56,14 +60,14 @@ LEFT JOIN
     public.pages_tbl p
 ON 
     p.page_id = ANY(r.page_access::integer[])
-     WHERE role_id = $1
+WHERE 
+    role_id = $1
 GROUP BY 
-    r.role_id, r.page_access
-    
-ORDER BY 
-    r.role_id ASC`, [id]);
+    r.role_id, r.page_access -- Only group by role_id and page_access
+`, [id]);
     return result.rows[0];
-}
+};
+
 
 
 exports.updateRoleByIdService = async (id, roleData) => {

@@ -54,8 +54,41 @@ exports.getAllRole = async (req, res) => {
 
 
 exports.getRoleById = async (req, res) => {
+
+    function modifyAllowedPages(rows) {
+        const groupedData = {};
+
+        rows.forEach(row => {
+            // Initialize group_label if not already present
+            if (!groupedData[row.group_label]) {
+                groupedData[row.group_label] = [];
+            }
+
+            // If the row has no parent_id, it's a top-level item
+            if (row.parent_id === null) {
+                groupedData[row.group_label].push({
+                    ...row,
+                    children: []
+                });
+            } else {
+                // Find the parent item and add it to its children
+                const parent = groupedData[row.group_label].find(item => item.page_id === row.parent_id);
+                if (parent) {
+                    parent.children.push(row);
+                }
+            }
+        });
+        return groupedData;
+    }
+
     try {
-        const role = await getRoleByIdService(req.params.id);
+        let role = await getRoleByIdService(req.params.id);
+
+        if (role?.allowed_pages?.length > 0) {
+            const modifiedAllowedPages = modifyAllowedPages(role?.allowed_pages)
+            role.allowed_pages = modifiedAllowedPages;
+        }
+
         if (role?.role_id) {
             res.status(200).json({
                 status: "Success",
