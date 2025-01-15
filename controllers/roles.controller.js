@@ -221,13 +221,26 @@ exports.getAllPage = async (req, res) => {
 
     try {
 
-        const pages = await getAllPageService(req.body);
+        const requiredFormat = req.query.format;
+        let pagesData = await getAllPageService(requiredFormat);
+        console.log(requiredFormat);
+        // if (requiredFormat !== "byRow") {
+        //     pagesData = transformData(pagesData)
+        // }
 
-        if (pages.length > 0) {
-            res.status(200).json({
-                status: "Success",
-                data: transformData(pages)
-            })
+        if (pagesData.length > 0) {
+            if (requiredFormat === "byRow") {
+                res.status(200).json({
+                    status: "Success",
+                    data: pagesData
+                })
+            }
+            else {
+                res.status(200).json({
+                    status: "Success",
+                    data: transformData(pagesData)
+                })
+            }
         }
         else {
             res.status(400).json({
