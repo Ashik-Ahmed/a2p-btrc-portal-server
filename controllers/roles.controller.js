@@ -223,10 +223,6 @@ exports.getAllPage = async (req, res) => {
 
         const requiredFormat = req.query.format;
         let pagesData = await getAllPageService(requiredFormat);
-        console.log(requiredFormat);
-        // if (requiredFormat !== "byRow") {
-        //     pagesData = transformData(pagesData)
-        // }
 
         if (pagesData.length > 0) {
             if (requiredFormat === "byRow") {
