@@ -1,13 +1,13 @@
 const client = require("../dbConnection");
 
 exports.createNewRoleService = async (roleData) => {
-    console.log(roleData);
-    const { role_id = 1212, role_name, page_access, created_by, created_at } = roleData;
+    // console.log(roleData);
+    const { role_name, page_access, created_by, created_at } = roleData;
 
-    let query = `INSERT INTO roles_tbl (role_id, role_name, page_access, created_by, created_at) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
+    let query = `INSERT INTO roles_tbl (role_name, page_access, created_by, created_at) VALUES ($1, $2, $3, $4) RETURNING *`;
 
-    const result = await client.query(query, [role_id, role_name, page_access, created_by, created_at]);
-    console.log(result);
+    const result = await client.query(query, [role_name, page_access, created_by, created_at]);
+
     return result.rows[0];
 }
 
