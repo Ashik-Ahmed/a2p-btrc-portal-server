@@ -117,7 +117,6 @@ exports.deleteRoleByIdService = async (id) => {
 
 
 exports.createPageService = async (pageData) => {
-    // console.log(pageData);
     const { page_serial, label, url, visibility, page_status, group_label, created_by } = pageData;
 
     let query = `INSERT INTO pages_tbl (page_serial, label, url, visibility, page_status, group_label,  created_by) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
