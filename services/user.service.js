@@ -23,7 +23,7 @@ exports.createNewUserService = async (userData) => {
 
 exports.getAllUserService = async (data) => {
     // const users = await client.query("SELECT * FROM users_tbl");
-    const users = await client.query("SELECT user_id, name, email, phone, address, role, photo, status, page_access, created_at FROM users_tbl ORDER BY created_at DESC");
+    const users = await client.query("SELECT user_id, name, email, phone, address, role, photo, status, page_access, login_history, created_at FROM users_tbl ORDER BY created_at DESC");
     return users.rows;
 }
 
