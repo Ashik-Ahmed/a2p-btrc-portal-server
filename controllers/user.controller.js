@@ -63,9 +63,8 @@ exports.getUserById = async (req, res) => {
     try {
         const user = await getUserByIdService(req.params.id);
 
-        const { password, ...others } = user
-
         if (user) {
+            const { password, ...others } = user
             res.status(200).json({
                 status: "Success",
                 data: user

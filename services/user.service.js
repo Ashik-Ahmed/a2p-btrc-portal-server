@@ -1,10 +1,25 @@
 const client = require("../dbConnection")
 
 exports.createNewUserService = async (userData) => {
-    const newUser = await client.query("INSERT INTO users_tbl (name, email, password, phone, address, role, photo, status, page_access) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *", [userData?.name, userData?.email, userData?.password, userData?.phone, userData?.address, (userData?.role || 'user'), userData?.photo, (userData?.status || 'inactive'), userData?.page_access]);
+    // Extract keys and values from userData
+    const keys = Object.keys(userData);
+    const values = Object.values(userData);
+
+    // Generate column names dynamically
+    const columns = keys.join(", "); // e.g., "name, email, password"
+
+    // Generate parameter placeholders dynamically
+    const placeholders = keys.map((_, index) => `$${index + 1}`).join(", "); // e.g., "$1, $2, $3"
+
+    // Construct the query dynamically
+    const query = `INSERT INTO users_tbl (${columns}) VALUES (${placeholders}) RETURNING *`;
+
+    // Execute query with values
+    const newUser = await client.query(query, values);
 
     return newUser.rows[0];
-}
+};
+
 
 exports.getAllUserService = async (data) => {
     // const users = await client.query("SELECT * FROM users_tbl");
