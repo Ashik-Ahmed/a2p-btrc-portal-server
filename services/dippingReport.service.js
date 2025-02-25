@@ -88,7 +88,16 @@ FROM
     try {
         const aggregatorwiseReport = await client.query(query, values);
         // console.log(aggregatorwiseReport.rows);
-        return aggregatorwiseReport.rows;
+        // return aggregatorwiseReport.rows;
+
+        // Convert `sms_count` and `dipping_count` from text to numbers
+        const processedData = aggregatorwiseReport.rows.map(row => ({
+            ...row,
+            sms_count: Number(row.sms_count),   // Convert from string to number
+            dipping_count: Number(row.dipping_count)  // Convert from string to number
+        }));
+
+        return processedData;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);
         return err?.message;
