@@ -5,8 +5,8 @@ exports.datewiseReportService = async (filter) => {
 
     let query = ` SELECT 
             TO_CHAR(DATE(delivery_date), 'YYYY-MM-DD') as delivery_date,
-            SUM(sms_count) as sms_count,
-            SUM(dipping_count) as dipping_count
+            SUM(sms_count) AS sms_count,
+            SUM(dipping_count) AS dipping_count
         FROM 
             dipping_summary_tbl`;
 
@@ -33,8 +33,15 @@ exports.datewiseReportService = async (filter) => {
     // console.log(query, values);
     try {
         const datewiseReport = await client.query(query, values);
-        // console.log(datewiseReport.rows);
-        return datewiseReport.rows;
+
+        // Convert `sms_count` and `dipping_count` from text to numbers
+        const processedData = datewiseReport.rows.map(row => ({
+            delivery_date: row.delivery_date,
+            sms_count: Number(row.sms_count),   // Convert from string to number
+            dipping_count: Number(row.dipping_count)  // Convert from string to number
+        }));
+
+        return processedData;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);
         return err?.message;
