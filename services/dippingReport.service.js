@@ -267,8 +267,13 @@ exports.messagetypewiseReportService = async (filter) => {
 
     try {
         const messagetypewiseReport = await client.query(query, values);
-        // console.log(messagetypewiseReport.rows);
-        return messagetypewiseReport.rows;
+        const processedData = messagetypewiseReport.rows.map(row => ({
+            ...row,
+            sms_count: Number(row.sms_count),   // Convert from string to number
+            dipping_count: Number(row.dipping_count)  // Convert from string to number
+        }));
+
+        return processedData;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);
         return err?.message;
