@@ -150,7 +150,7 @@ exports.updatePasswordById = async (req, res) => {
 }
 
 exports.updateUserById = async (req, res) => {
-    // console.log(req.params.id, req.body);
+
     try {
         const result = await updateUserByIdService(req.params.id, req.body);
         if (result?.rowCount > 0) {
@@ -213,11 +213,19 @@ exports.userLogin = async (req, res) => {
         if (!email || !password) {
             return res.status(401).json({
                 status: 'Failed',
-                error: 'please provide email and password'
+                error: 'Please provide email and password'
             })
         }
 
         const user = await userLoginService(email);
+
+
+        if (user?.status === "inactive") {
+            return res.status(403).json({
+                status: "Failed",
+                message: "Account is no longer active"
+            })
+        }
 
         if (user?.user_id) {
 

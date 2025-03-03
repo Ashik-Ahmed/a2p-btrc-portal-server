@@ -278,5 +278,4 @@ exports.messagetypewiseReportService = async (filter) => {
         console.error('Error executing query', err.message, err.stack);
         return err?.message;
     }
-
 }

@@ -27,7 +27,7 @@ exports.getAggregatorList = async (req, res) => {
 }
 
 exports.getANSList = async (req, res) => {
-    console.log("query filter: ", req.query?.filter);
+    // console.log("query filter: ", req.query?.filter);
     try {
         const filter = JSON.parse(req?.query?.filter) || {};
         console.log(filter);
