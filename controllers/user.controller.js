@@ -219,8 +219,7 @@ exports.userLogin = async (req, res) => {
 
         const user = await userLoginService(email);
 
-
-        if (user?.status === "inactive") {
+        if (user?.status === "Inactive") {
             return res.status(403).json({
                 status: "Failed",
                 message: "Account is no longer active"
