@@ -117,11 +117,11 @@ exports.deleteRoleByIdService = async (id) => {
 
 
 exports.createPageService = async (pageData) => {
-    const { page_serial, label, url, visibility, page_status, group_label, created_by } = pageData;
+    const { group_label, label, url, page_serial, parent_id, visibility, page_status, created_by } = pageData;
 
-    let query = `INSERT INTO pages_tbl (page_serial, label, url, visibility, page_status, group_label,  created_by) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
+    let query = `INSERT INTO pages_tbl (group_label,  label, url, page_serial, parent_id, visibility, page_status, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
 
-    const result = await client.query(query, [page_serial, label, url, visibility, page_status, group_label, created_by]);
+    const result = await client.query(query, [group_label, label, url, page_serial, parent_id, visibility, page_status, created_by]);
 
     return result.rows[0];
 }
