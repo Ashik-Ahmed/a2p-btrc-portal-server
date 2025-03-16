@@ -130,19 +130,25 @@ exports.getAllPageService = async () => {
     const result = await client.query(`
         SELECT 
             p.*,
-            u.name AS created_by_name
+            u.name AS created_by_name,
+            parent_page.label AS parent_label  -- Fetch only the label from the parent
         FROM 
             pages_tbl p
         LEFT JOIN 
             users_tbl u 
         ON 
             p.created_by = u.user_id
+        LEFT JOIN 
+            pages_tbl parent_page
+        ON 
+            p.parent_id = parent_page.page_id  -- Self-join to get the parent label
         ORDER BY 
             p.page_id ASC
     `);
 
     return result.rows;
-}
+};
+
 
 exports.updatePageByIdService = async (id, pageData) => {
 
