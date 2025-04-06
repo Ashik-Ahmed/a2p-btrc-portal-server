@@ -114,3 +114,30 @@ exports.getCliFromClitableService = async () => {
     const cliArray = cliList.rows.map(row => row.cli);
     return cliArray;
 }
+
+
+exports.getDailyDippingReportService = async (date) => {
+    console.log(date);
+    let query = `SELECT 
+                client_id,
+                    operator, 
+                    SUM(dipping_count) AS total_dipping_count
+                FROM 
+                    public.dipping_summary_tbl
+                WHERE
+                    delivery_date=$1
+                GROUP BY 
+                    client_id,
+                    delivery_date,
+                    operator
+                ORDER BY 
+                    total_dipping_count DESC`;
+
+    try {
+        const ansList = await client.query(query, [date]);
+        return ansList.rows;
+    } catch (err) {
+        console.error('Error executing query', err.message, err.stack);
+        return err;
+    }
+}
