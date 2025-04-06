@@ -112,10 +112,15 @@ exports.getCliFromCliTable = async (req, res) => {
 
 
 exports.getDailyDippingReport = async (req, res) => {
+
     try {
-        const date = JSON.parse(req?.query?.date) || {};
-        const dippingReport = await getDailyDippingReportService(date);
-        console.log(dippingReport.length);
+        const date = new Date(req?.query?.date);
+
+        const formatted = date.toLocaleDateString('en-CA', {
+            timeZone: 'Asia/Dhaka' // Ensures BD timezone
+        });
+        const dippingReport = await getDailyDippingReportService(formatted);
+
         if (dippingReport) {
             res.status(200).json({
                 status: "Success",

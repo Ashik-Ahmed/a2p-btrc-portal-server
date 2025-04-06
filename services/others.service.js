@@ -117,7 +117,7 @@ exports.getCliFromClitableService = async () => {
 
 
 exports.getDailyDippingReportService = async (date) => {
-    console.log(date);
+
     let query = `SELECT 
                 client_id,
                     operator, 
