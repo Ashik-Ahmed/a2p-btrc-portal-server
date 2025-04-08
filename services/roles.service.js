@@ -1,7 +1,7 @@
 const client = require("../dbConnection");
 
 exports.createNewRoleService = async (roleData) => {
-    // console.log(roleData);
+
     const { role_name, page_access, created_by, created_at } = roleData;
 
     let query = `INSERT INTO roles_tbl (role_name, page_access, created_by, created_at) VALUES ($1, $2, $3, $4) RETURNING *`;

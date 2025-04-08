@@ -10,7 +10,6 @@ app.use(express.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
     res.send('Server is Running!!')
-    console.log('api hit');
 })
 
 

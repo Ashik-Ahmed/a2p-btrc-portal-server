@@ -86,7 +86,7 @@ exports.getUserById = async (req, res) => {
 }
 
 exports.updatePasswordById = async (req, res) => {
-    console.log(req.params, req.body);
+
     try {
         const { id } = req.params;
         const { currentPassword, newPassword } = req.body;
@@ -112,7 +112,7 @@ exports.updatePasswordById = async (req, res) => {
                 message: "No user found"
             })
         }
-        // console.log(password, user);
+
         const isMatch = await bcrypt.compare(currentPassword, user.password);
         if (!isMatch) {
             return res.status(405).json({
@@ -141,7 +141,7 @@ exports.updatePasswordById = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error);
+
         return res.status(500).json({
             status: "Failed",
             message: error.message
@@ -206,10 +206,10 @@ exports.deleteUserById = async (req, res) => {
 }
 
 exports.userLogin = async (req, res) => {
-    // console.log(req.body);
+
     try {
         const { email, password } = req.body;
-        // console.log(email, password);
+
         if (!email || !password) {
             return res.status(401).json({
                 status: 'Failed',
@@ -263,7 +263,7 @@ exports.userLogin = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error);
+
         res.status(500).json({
             status: "Failed",
             message: error.message

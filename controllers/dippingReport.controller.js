@@ -3,14 +3,13 @@ const { aggregatorwiseReportService, datewiseReportService, answiseReportService
 exports.datewiseReport = async (req, res) => {
     try {
         const filter = JSON.parse(req.query?.filter) || {};
-        // console.log(filter);
+
         if (!filter.start_date || !filter.end_date) {
             return res.status(403).json({
                 status: "Failed",
                 message: "Please provide start_date and end_date"
             })
         }
-
 
         const datewiseReport = await datewiseReportService(filter);
 
@@ -40,7 +39,7 @@ exports.aggregatorwiseReport = async (req, res) => {
     try {
         const filter = JSON.parse(req.query?.filter) || {};
 
-        // console.log(filter);
+
 
         if (!filter.start_date || !filter.end_date) {
             return res.status(403).json({
@@ -50,7 +49,7 @@ exports.aggregatorwiseReport = async (req, res) => {
         }
 
         const aggregatorwiseReport = await aggregatorwiseReportService(filter);
-        // console.log(aggregatorwiseReport);
+
         if (aggregatorwiseReport) {
             res.status(200).json({
                 status: "Success",
@@ -77,7 +76,7 @@ exports.answiseReport = async (req, res) => {
 
         const filter = JSON.parse(req.query?.filter) || {};
 
-        console.log(filter);
+
 
         if (!filter.start_date || !filter.end_date) {
             return res.status(403).json({
@@ -109,11 +108,11 @@ exports.answiseReport = async (req, res) => {
 }
 
 exports.cliwiseReport = async (req, res) => {
-    // console.log(req.query);
+
     try {
         const filter = JSON.parse(req.query?.filter) || {};
 
-        // console.log(filter);
+
 
         if (!filter.start_date || !filter.end_date) {
             return res.status(403).json({

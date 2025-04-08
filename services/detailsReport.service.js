@@ -60,7 +60,7 @@ exports.getA2PDetailsReportService = async (filter, limit = 10000, offset = 0) =
 
     try {
         const a2pDetailsReport = await client.query(query, values);
-        // console.log(a2pDetailsReport.rows.length);
+
         return a2pDetailsReport.rows;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);
@@ -104,7 +104,7 @@ exports.getReportByMSISDNService = async (filter) => {
 
     // Append the ORDER BY clause
     query += ' ORDER BY delivery_date DESC';
-    // console.log(query, values);
+
 
     try {
         const msisdnReport = await client.query(query, values);
@@ -175,7 +175,7 @@ exports.getCliDetailsReportService = async (filter) => {
 
     try {
         const cliDetailsReport = await client.query(query, values);
-        console.log(cliDetailsReport.rows.length);
+
         return cliDetailsReport.rows;
     } catch (err) {
         console.error('Error executing query', err.message, err.stack);

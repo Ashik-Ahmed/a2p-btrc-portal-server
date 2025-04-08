@@ -5,7 +5,7 @@ exports.getA2PDetailsReport = async (req, res) => {
     try {
 
         const filter = JSON.parse(req?.query?.filter) || {};
-        console.log(filter);
+
         if (!filter?.date) {
             {
                 return res.status(403).json({
@@ -58,7 +58,7 @@ exports.getReportByMSISDN = async (req, res) => {
         }
 
         const msisdnDetailsReport = await getReportByMSISDNService(filter);
-        // console.log(msisdnDetailsReport);
+
         if (msisdnDetailsReport.length > 0) {
             res.status(200).json({
                 status: "Success",
@@ -87,7 +87,7 @@ exports.getCliDetailsReport = async (req, res) => {
         const filter = JSON.parse(req?.query?.filter) || {};
 
         const cliDetailsReport = await getCliDetailsReportService(filter);
-        // console.log(cliDetailsReport);
+
         if (cliDetailsReport.length > 0) {
             res.status(200).json({
                 status: "Success",

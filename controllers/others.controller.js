@@ -18,7 +18,7 @@ exports.getAggregatorList = async (req, res) => {
         }
 
     } catch (error) {
-        // console.log(error);
+
         res.status(500).json({
             status: "Failed",
             message: error.message
@@ -27,10 +27,10 @@ exports.getAggregatorList = async (req, res) => {
 }
 
 exports.getANSList = async (req, res) => {
-    // console.log("query filter: ", req.query?.filter);
+
     try {
         const filter = JSON.parse(req?.query?.filter) || {};
-        console.log(filter);
+
         const ansList = await getANSListService(filter);
         if (ansList) {
             res.status(200).json({
@@ -47,7 +47,7 @@ exports.getANSList = async (req, res) => {
         }
 
     } catch (error) {
-        // console.log(error);
+
         res.status(500).json({
             status: "Failed",
             message: error.message
@@ -60,7 +60,7 @@ exports.getCliList = async (req, res) => {
     try {
         const filter = JSON.parse(req?.query?.filter) || {};
         const cliList = await getCliListService(filter);
-        console.log(cliList.length);
+
         if (cliList) {
             res.status(200).json({
                 status: "Success",
@@ -76,7 +76,7 @@ exports.getCliList = async (req, res) => {
         }
 
     } catch (error) {
-        // console.log(error);
+
         res.status(500).json({
             status: "Failed",
             message: error.message
@@ -88,7 +88,7 @@ exports.getCliList = async (req, res) => {
 exports.getCliFromCliTable = async (req, res) => {
     try {
         const cliList = await getCliFromClitableService();
-        console.log(cliList.length);
+
         if (cliList) {
             res.status(200).json({
                 status: "Success",

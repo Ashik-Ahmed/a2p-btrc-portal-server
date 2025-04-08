@@ -5,7 +5,7 @@ exports.getSummaryReport = async (req, res) => {
         const filter = JSON.parse(req.query?.filter) || {};
 
         const summaryReport = await getSummaryReportService(filter);
-        // console.log(summaryReport);
+
         if (summaryReport) {
             res.status(200).json({
                 status: "Success",
@@ -31,10 +31,10 @@ exports.getSummaryReport = async (req, res) => {
 exports.getCliSummaryReport = async (req, res) => {
     try {
         const filter = JSON.parse(req?.query?.filter) || {};
-        // console.log(filter);
+
 
         const cliSummaryReport = await getCliSummaryReportService(filter);
-        // console.log(cliSummaryReport);
+
         if (cliSummaryReport.length > 0) {
             res.status(200).json({
                 status: "Success",

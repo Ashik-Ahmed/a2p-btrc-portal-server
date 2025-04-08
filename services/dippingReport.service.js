@@ -30,7 +30,7 @@ exports.datewiseReportService = async (filter) => {
 
     // Append the ORDER BY clause
     query += ' ORDER BY delivery_date ASC';
-    // console.log(query, values);
+
     try {
         const datewiseReport = await client.query(query, values);
 
@@ -83,11 +83,11 @@ FROM
 
     // Append the ORDER BY clause
     query += ' ORDER BY delivery_date ASC';
-    // console.log(query, values);
+
 
     try {
         const aggregatorwiseReport = await client.query(query, values);
-        // console.log(aggregatorwiseReport.rows);
+
         // return aggregatorwiseReport.rows;
 
         // Convert `sms_count` and `dipping_count` from text to numbers
@@ -105,7 +105,7 @@ FROM
 }
 
 exports.answiseReportService = async (filter) => {
-    console.log("filter: ", filter);
+
     let query = `SELECT 
         TO_CHAR(DATE(delivery_date), 'YYYY-MM-DD') as delivery_date,
         ans_type,
@@ -147,7 +147,7 @@ exports.answiseReportService = async (filter) => {
 
     try {
         const answiseReport = await client.query(query, values);
-        // console.log(answiseReport.rows);
+
         // return answiseReport.rows;
 
         // Convert `sms_count` and `dipping_count` from text to numbers
@@ -167,7 +167,7 @@ exports.answiseReportService = async (filter) => {
 }
 
 exports.cliwiseReportService = async (filter) => {
-    console.log(filter);
+
     let query = `SELECT 
         TO_CHAR(DATE(delivery_date), 'YYYY-MM-DD') as delivery_date,
         client_id,
@@ -206,7 +206,7 @@ exports.cliwiseReportService = async (filter) => {
 
     try {
         const cliwiseReport = await client.query(query, values);
-        // console.log(cliwiseReport.rows);
+
         // return cliwiseReport.rows;
 
         // Convert `sms_count` and `dipping_count` from text to numbers

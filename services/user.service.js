@@ -33,7 +33,7 @@ exports.getUserByIdService = async (id) => {
 }
 
 exports.updatePasswordByIdService = async (id, password) => {
-    // console.log("from service: ", id, password);
+
     const result = await client.query("UPDATE users_tbl SET password = $1 WHERE user_id = $2", [password, id]);
     return result;
 }
@@ -91,27 +91,27 @@ exports.updateUserByIdService = async (id, userData) => {
 
     query += ` WHERE user_id = $${conditions.length + 1}`;
     values.push(id);
-    // console.log(query, values);
+
 
     const result = await client.query(query, values);
-    // console.log(result);
+
 
     return result;
 
     // const result = await client.query(" UPDATE users_tbl SET name = $1, email = $2, password = $3, phone = $4, address = $5, role = $6, photo = $7, status = $8, page_access = $9 WHERE user_id = $10", [userData?.name, userData?.email, userData?.password, userData?.phone, userData?.address, userData?.role, userData?.photo, userData?.status, userData?.page_access, id]);
 
-    // console.log(result);
+
     // return result;
 }
 
 exports.deleteUserByIdService = async (id) => {
     const result = await client.query("DELETE FROM users_tbl WHERE user_id = $1", [id]);
-    // console.log(result);
+
     return result;
 }
 
 exports.userLoginService = async (email) => {
     const user = await client.query("SELECT * FROM users_tbl WHERE email = $1", [email]);
-    // console.log(user.rows[0]);
+
     return user.rows[0];
 }
