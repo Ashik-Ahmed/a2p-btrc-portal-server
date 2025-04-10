@@ -119,6 +119,7 @@ exports.getDailyDippingReport = async (req, res) => {
         const formatted = date.toLocaleDateString('en-CA', {
             timeZone: 'Asia/Dhaka' // Ensures BD timezone
         });
+
         const dippingReport = await getDailyDippingReportService(formatted);
 
         if (dippingReport) {
