@@ -1,5 +1,5 @@
 const express = require('express');
-const { createNewUser, getAllUser, getUserById, deleteUserById, updateUserById, userLogin, updatePasswordById } = require('../controllers/user.controller');
+const { createNewUser, getAllUser, getUserById, deleteUserById, updateUserById, userLogin, updatePasswordById, getSidebar } = require('../controllers/user.controller');
 const verifyToken = require('../middleware/verifyToken');
 
 
@@ -7,6 +7,9 @@ const router = express.Router();
 
 router.route('/login')
     .post(userLogin)
+
+router.route('/sidebar/:id')
+    .get(verifyToken, getSidebar)
 
 router.route('/updatePassword/:id')
     .patch(verifyToken, updatePasswordById)

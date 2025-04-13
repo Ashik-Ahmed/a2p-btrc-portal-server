@@ -1,4 +1,4 @@
-const { createNewUserService, getAllUserService, getUserByIdService, deleteUserByIdService, updateUserByIdService, userLoginService, updatePasswordByIdService } = require("../services/user.service")
+const { createNewUserService, getAllUserService, getUserByIdService, deleteUserByIdService, updateUserByIdService, userLoginService, updatePasswordByIdService, getSidebarService } = require("../services/user.service")
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../utils/generateToken");
 
@@ -264,6 +264,21 @@ exports.userLogin = async (req, res) => {
         }
     } catch (error) {
 
+        res.status(500).json({
+            status: "Failed",
+            message: error.message
+        })
+    }
+}
+
+exports.getSidebar = async (req, res) => {
+    try {
+        const sidebar = await getSidebarService(req.params.id);
+        res.status(200).json({
+            status: "Success",
+            data: sidebar
+        })
+    } catch (error) {
         res.status(500).json({
             status: "Failed",
             message: error.message

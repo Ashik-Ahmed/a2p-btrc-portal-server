@@ -115,3 +115,10 @@ exports.userLoginService = async (email) => {
 
     return user.rows[0];
 }
+
+
+exports.getSidebarService = async (id) => {
+    const user = await client.query("SELECT page_access FROM users_tbl WHERE user_id = $1", [id]);
+
+    return user.rows[0];
+}

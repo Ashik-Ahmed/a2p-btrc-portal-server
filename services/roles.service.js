@@ -143,7 +143,7 @@ exports.getAllPageService = async () => {
         ON 
             p.parent_id = parent_page.page_id  -- Self-join to get the parent label
         ORDER BY 
-            p.page_id ASC
+            p.page_serial ASC
     `);
 
     return result.rows;
