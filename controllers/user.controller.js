@@ -229,18 +229,23 @@ exports.userLogin = async (req, res) => {
         if (user?.user_id) {
 
             // remove password and address field
-            const { password: pwd, address: addr, ...others } = user;
+            const { password: pwd, address: addr, login_history, ...others } = user;
 
             // compare password
             const isPasswordMatched = await bcrypt.compare(password, user.password);
 
             if (isPasswordMatched) {
+                //get sidebar
+                const sidebar = await getSidebarService(user.role);
+
                 // generate token
                 const token = generateToken(others);
+
                 res.status(200).json({
                     status: "Success",
                     data: {
                         ...others,
+                        sidebar: sidebar,
                         accessToken: token
                     }
                 })

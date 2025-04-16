@@ -117,8 +117,26 @@ exports.userLoginService = async (email) => {
 }
 
 
-exports.getSidebarService = async (id) => {
-    const user = await client.query("SELECT page_access FROM users_tbl WHERE user_id = $1", [id]);
+exports.getSidebarService = async (role) => {
+    console.log(role);
+    const result = await client.query(`
+        SELECT 
+            p.*,
+            u.name AS created_by_name,
+            parent_page.label AS parent_label  -- Fetch only the label from the parent
+        FROM 
+            pages_tbl p
+        LEFT JOIN 
+            users_tbl u 
+        ON 
+            p.created_by = u.user_id
+        LEFT JOIN 
+            pages_tbl parent_page
+        ON 
+            p.parent_id = parent_page.page_id  -- Self-join to get the parent label
+        ORDER BY 
+            p.page_serial ASC
+    `);
 
-    return user.rows[0];
+    return result.rows;
 }
