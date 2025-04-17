@@ -236,7 +236,7 @@ exports.userLogin = async (req, res) => {
 
             if (isPasswordMatched) {
                 //get sidebar
-                const sidebar = await getSidebarService(user.role);
+                // const sidebar = await getSidebarService(user.role);
 
                 // generate token
                 const token = generateToken(others);
@@ -245,7 +245,7 @@ exports.userLogin = async (req, res) => {
                     status: "Success",
                     data: {
                         ...others,
-                        sidebar: sidebar,
+                        // sidebar: sidebar,
                         accessToken: token
                     }
                 })
