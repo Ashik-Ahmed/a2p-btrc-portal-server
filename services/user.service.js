@@ -153,19 +153,17 @@ exports.getSidebarService = async (userId) => {
                 'group_label', p.group_label
             )
             ORDER BY p.group_serial, p.page_serial -- Order inside jsonb_agg
-        )
-        FROM 
-            public.roles_tbl r
-        LEFT JOIN 
-            public.pages_tbl p
-        ON 
-            p.page_id = ANY(r.page_access::integer[])
-        WHERE 
-            role_id = $1
-        GROUP BY 
-            r.role_id, r.page_access -- Only group by role_id and page_access
-    `, [1]);
-
-    // Extract the array directly from the query result
-    return result.rows[0]?.jsonb_agg || [];
+        ) AS allowed_pages
+    FROM 
+        public.roles_tbl r
+    LEFT JOIN 
+        public.pages_tbl p
+    ON 
+        p.page_id = ANY(r.page_access::integer[])
+    WHERE 
+        role_id = $1
+    GROUP BY 
+        r.role_id, r.page_access -- Only group by role_id and page_access
+    `, [3]);
+    return result.rows[0];
 }

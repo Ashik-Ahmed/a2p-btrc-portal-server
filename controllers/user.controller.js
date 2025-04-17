@@ -1,6 +1,7 @@
 const { createNewUserService, getAllUserService, getUserByIdService, deleteUserByIdService, updateUserByIdService, userLoginService, updatePasswordByIdService, getSidebarService } = require("../services/user.service")
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../utils/generateToken");
+const { modifyAllowedPages } = require("../utils/formatPagesHierarchy");
 
 exports.createNewUser = async (req, res) => {
     try {
@@ -281,7 +282,7 @@ exports.getSidebar = async (req, res) => {
         const sidebar = await getSidebarService(req.params.id);
         res.status(200).json({
             status: "Success",
-            data: sidebar
+            data: modifyAllowedPages(sidebar?.allowed_pages)
         })
     } catch (error) {
         res.status(500).json({
