@@ -121,25 +121,6 @@ exports.getSidebarService = async (userId) => {
 
     const userRole = await client.query("SELECT role FROM users_tbl WHERE user_id = $1", [userId]);
     const role = userRole.rows[0]?.role;
-    // console.log(userRole);
-
-    // const result = await client.query(`
-    //     SELECT 
-    //         p.page_id, p.page_serial, p.label, p.url, p.visibility, p.page_status,  p.parent_id, p.group_label, p.group_serial,
-    //         parent_page.label AS parent_label  -- Fetch only the label from the parent
-    //     FROM 
-    //         pages_tbl p
-    //     LEFT JOIN 
-    //         users_tbl u 
-    //     ON 
-    //         p.created_by = u.user_id
-    //     LEFT JOIN 
-    //         pages_tbl parent_page
-    //     ON 
-    //         p.parent_id = parent_page.page_id  -- Self-join to get the parent label
-    //     ORDER BY 
-    //         p.page_serial ASC
-    // `);
 
     const result = await client.query(`SELECT 
         jsonb_agg(
@@ -164,6 +145,35 @@ exports.getSidebarService = async (userId) => {
         role_id = $1
     GROUP BY 
         r.role_id, r.page_access -- Only group by role_id and page_access
-    `, [3]);
+    `, [4]);
+
+    //     const result = await client.query(`SELECT 
+    //     jsonb_agg(
+    //         jsonb_build_object(
+    //             'page_id', p.page_id,
+    //             'label', p.label,  -- Use 'name' column as label
+    //             'url', p.url,
+    //             'parent_id', p.parent_id,
+    //             'page_serial', p.page_serial,
+    //             'group_serial', p.group_serial,
+    //             'group_label', p.group_label  -- Use 'group_label' column
+    //         )
+    //         ORDER BY p.group_serial, p.page_serial
+    //     ) AS allowed_pages
+    // FROM 
+    //     public.roles_tbl r
+    // LEFT JOIN LATERAL (
+    //     SELECT CAST(unnest(r.page_access) AS INTEGER) AS page_id
+    // ) pa ON true
+    // LEFT JOIN 
+    //     public.pages_tbl p
+    // ON 
+    //     p.page_id = pa.page_id
+    // WHERE 
+    //     r.role_id = $1
+    // GROUP BY 
+    //     r.role_id;`, [4]);
+
+    // console.log(result.rows[0]);
     return result.rows[0];
 }
