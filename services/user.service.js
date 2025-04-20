@@ -23,7 +23,29 @@ exports.createNewUserService = async (userData) => {
 
 exports.getAllUserService = async (data) => {
     // const users = await client.query("SELECT * FROM users_tbl");
-    const users = await client.query("SELECT user_id, name, email, phone, address, role, photo, status, page_access, login_history, created_at FROM users_tbl ORDER BY created_at DESC");
+    // const users = await client.query("SELECT user_id, name, email, phone, address, role, photo, status, page_access, login_history, created_at FROM users_tbl ORDER BY created_at DESC");
+    const users = await client.query(`
+        SELECT 
+            u.user_id, 
+            u.name, 
+            u.email, 
+            u.phone, 
+            u.address, 
+            TRIM(r.role_name) as role, 
+            u.photo, 
+            u.status, 
+            u.page_access, 
+            u.login_history, 
+            u.created_at 
+        FROM 
+            users_tbl u
+        LEFT JOIN 
+            roles_tbl r 
+        ON 
+            u.role = r.role_id
+        ORDER BY 
+            u.created_at DESC
+    `);
     return users.rows;
 }
 
