@@ -31,7 +31,12 @@ exports.getAllUserService = async (data) => {
             u.email, 
             u.phone, 
             u.address, 
-            TRIM(r.role_name) as role, 
+            TRIM(r.role_name) as role,
+            jsonb_build_object(
+                'role_id', r.role_id,
+                'role_name', TRIM(r.role_name),
+                'page_access', r.page_access
+            ) as role_details,
             u.photo, 
             u.status, 
             u.page_access, 
@@ -61,7 +66,7 @@ exports.updatePasswordByIdService = async (id, password) => {
 }
 
 exports.updateUserByIdService = async (id, userData) => {
-
+    console.log(id, userData);
     let query = "UPDATE users_tbl SET ";
     const conditions = [];
     const values = [];
@@ -117,13 +122,9 @@ exports.updateUserByIdService = async (id, userData) => {
 
     const result = await client.query(query, values);
 
-
+    console.log(result);
     return result;
 
-    // const result = await client.query(" UPDATE users_tbl SET name = $1, email = $2, password = $3, phone = $4, address = $5, role = $6, photo = $7, status = $8, page_access = $9 WHERE user_id = $10", [userData?.name, userData?.email, userData?.password, userData?.phone, userData?.address, userData?.role, userData?.photo, userData?.status, userData?.page_access, id]);
-
-
-    // return result;
 }
 
 exports.deleteUserByIdService = async (id) => {
@@ -133,7 +134,21 @@ exports.deleteUserByIdService = async (id) => {
 }
 
 exports.userLoginService = async (email) => {
-    const user = await client.query("SELECT * FROM users_tbl WHERE email = $1", [email]);
+    // const user = await client.query("SELECT * FROM users_tbl WHERE email = $1", [email]);
+
+    const user = await client.query(`
+        SELECT 
+            u.*,
+            TRIM(r.role_name) as role
+        FROM 
+            users_tbl u
+        LEFT JOIN 
+            roles_tbl r 
+        ON 
+            u.role = r.role_id
+        WHERE 
+            u.email = $1
+    `, [email]);
 
     return user.rows[0];
 }
