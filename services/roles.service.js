@@ -13,27 +13,41 @@ exports.createNewRoleService = async (roleData) => {
 
 
 exports.getAllRoleService = async () => {
-    const result = await client.query(`SELECT 
-    r.*,
-    jsonb_agg(
-        jsonb_build_object(
-            'page_id', p.page_id,
-            'label', p.label,
-            'url', p.url,
-            'page_serial', p.page_serial
-        )
-    ) AS allowed_pages
-FROM 
-    public.roles_tbl r
-LEFT JOIN 
-    public.pages_tbl p
-ON 
-    p.page_id = ANY(r.page_access::integer[])
-GROUP BY 
-    r.role_id, r.page_access
-    
-ORDER BY 
-    r.role_id ASC`);
+    const result = await client.query(`
+        SELECT 
+        r.*,
+        jsonb_agg(
+            DISTINCT jsonb_build_object(
+                'page_id', p.page_id,
+                'label', p.label,
+                'url', p.url,
+                'page_serial', p.page_serial
+            )
+        ) AS allowed_pages,
+        (
+            SELECT jsonb_agg(
+                jsonb_build_object(
+                    'user_id', u.user_id,
+                    'name', u.name,
+                    'email', u.email,
+                    'status', u.status,
+                    'photo', u.photo
+                )
+            )
+            FROM users_tbl u
+            WHERE u.role = r.role_id
+        ) AS users
+    FROM 
+        public.roles_tbl r
+    LEFT JOIN 
+        public.pages_tbl p
+    ON 
+        p.page_id = ANY(r.page_access::integer[])
+    GROUP BY 
+        r.role_id, r.page_access
+    ORDER BY 
+        r.role_id ASC
+    `);
 
     return result.rows;
 }

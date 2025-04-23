@@ -66,7 +66,7 @@ exports.updatePasswordByIdService = async (id, password) => {
 }
 
 exports.updateUserByIdService = async (id, userData) => {
-    console.log(id, userData);
+    // console.log(id, userData);
     let query = "UPDATE users_tbl SET ";
     const conditions = [];
     const values = [];
@@ -122,7 +122,6 @@ exports.updateUserByIdService = async (id, userData) => {
 
     const result = await client.query(query, values);
 
-    console.log(result);
     return result;
 
 }
@@ -182,7 +181,7 @@ exports.getSidebarService = async (userId) => {
         role_id = $1
     GROUP BY 
         r.role_id, r.page_access -- Only group by role_id and page_access
-    `, [4]);
+    `, [role]);
 
     //     const result = await client.query(`SELECT 
     //     jsonb_agg(
