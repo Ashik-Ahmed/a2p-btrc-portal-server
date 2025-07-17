@@ -8,7 +8,9 @@ const router = express.Router();
 
 router.route('/pages')
     .post(verifyToken, createPage)
+    // .post(createPage)
     .get(verifyToken, getAllPage)
+// .get(getAllPage)
 
 router.route('/pages/:id')
     .patch(verifyToken, updatePageById)
@@ -16,11 +18,14 @@ router.route('/pages/:id')
 
 router.route('/')
     .post(verifyToken, createNewRole)
+    // .post(createNewRole)
     .get(verifyToken, getAllRole)
+// .get(getAllRole)
 
 
 router.route('/:id')
     .get(verifyToken, getRoleById)
+    // .get(getRoleById)
     .patch(verifyToken, updateRoleById)
     .delete(verifyToken, deleteRoleById)
 

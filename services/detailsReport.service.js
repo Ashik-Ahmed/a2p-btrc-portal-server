@@ -15,8 +15,7 @@ exports.getA2PDetailsReportService = async (filter, limit = 10000, offset = 0) =
     message_type,
     operator,
     source_ip
-    FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.date)}`;
-
+    FROM public."cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.date)}"`;
 
     // Array to hold the conditions
     const conditions = [];
@@ -81,7 +80,7 @@ exports.getReportByMSISDNService = async (filter) => {
     operator,
     ans_business_code,
     source_ip
-    FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.filterDate)}`;
+    FROM public."cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.filterDate)}"`;
 
     // let query = `SELECT * FROM public.cp_broadcast_history_btrc_tbl_${formatDateAsPartition(filter?.filterDate)}`;
     // Array to hold the conditions

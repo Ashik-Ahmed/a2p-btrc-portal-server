@@ -4,7 +4,6 @@ exports.getAggregatorListService = async () => {
     // const aggregatorList = await client.query("SELECT DISTINCT client_id FROM dipping_summary_tbl");
     const aggregatorList = await client.query("SELECT DISTINCT client_id FROM aagregator_cli_tbl WHERE client_id != '' ORDER BY client_id ASC");
 
-
     return aggregatorList.rows;
 }
 

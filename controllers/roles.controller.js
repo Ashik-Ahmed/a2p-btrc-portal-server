@@ -7,7 +7,6 @@ exports.createNewRole = async (req, res) => {
 
         const newRole = await createNewRoleService(roleData);
 
-
         if (newRole) {
             res.status(200).json({
                 status: "Success",
@@ -21,7 +20,7 @@ exports.createNewRole = async (req, res) => {
             })
         }
     } catch (error) {
-
+        console.log("Error in createNewRole:", error);
         res.status(500).json({
             status: "Failed",
             message: error.message
