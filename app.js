@@ -7,6 +7,8 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }))
+// Express middleware to handle SOAP requests
+app.use(express.raw({ type: 'text/xml', limit: '10mb' }));
 
 app.get('/', (req, res) => {
     res.send('Server is Running!!')
@@ -20,6 +22,7 @@ const dippingReportRoute = require('./routes/dippingReport.route');
 const detailsReportRoute = require('./routes/detailsReport.route')
 const roleRoute = require('./routes/roles.route');
 const othersRoute = require('./routes/others.route');
+const mnpRoute = require('./routes/mnp.route');
 
 
 app.use('/api/v1/user', userRoute);
@@ -29,5 +32,6 @@ app.use('/api/v1/dippingReport', dippingReportRoute);
 app.use('/api/v1/detailsReport', detailsReportRoute);
 app.use('/api/v1/roles', roleRoute);
 app.use('/api/v1/others', othersRoute);
+app.use('/api/v1/mnp', mnpRoute);
 
 module.exports = app;
