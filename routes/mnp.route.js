@@ -1,5 +1,6 @@
 const express = require('express');
 const { processBroadcastMessage } = require('../utils/mnp');
+const { receiveMnpBroadcaseController } = require('../controllers/mnp.controller');
 
 
 const router = express.Router();
@@ -13,6 +14,9 @@ router.route('/').post((req, res) => {
     res.send('MNP route is working');
 
 });
+
+// MNP Broadcast Receive
+router.route('/broadcast').post(receiveMnpBroadcaseController);
 
 router.post('/test-broadcast', async (req, res) => {
     try {

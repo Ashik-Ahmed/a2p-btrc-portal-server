@@ -18,13 +18,13 @@ exports.receiveMnpBroadcaseController = async (req, res) => {
             return res.status(400).send(createSoapFault('Invalid broadcast message'));
         }
 
-        // Validate required fields
+        // Validate required fields based on business rules
         const validationError = validateBroadcastMessage(broadcastData);
         if (validationError) {
             return res.status(400).send(createSoapFault(validationError));
         }
 
-        // Process the broadcast message (store in database, etc.)
+        // Process the broadcast message
         await processBroadcastMessage(broadcastData);
 
         // Send successful SOAP response
