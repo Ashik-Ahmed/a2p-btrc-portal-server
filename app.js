@@ -13,6 +13,9 @@ app.use(express.raw({ type: 'text/xml', limit: '10mb' }));
 app.get('/', (req, res) => {
     res.send('Server is Running!!')
 })
+app.get('/api', (req, res) => {
+    res.send('API is Working!!')
+})
 
 
 const userRoute = require('./routes/user.route');
