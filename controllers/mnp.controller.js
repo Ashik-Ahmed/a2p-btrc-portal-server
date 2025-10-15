@@ -1,4 +1,5 @@
 
+const { receiveMnpBroadcaseService } = require('../services/mnp.service');
 const { parseBroadcastMessage, createSoapFault, validateBroadcastMessage, processBroadcastMessage, createAcknowledgeResponse } = require('../utils/mnp');
 
 exports.receiveMnpBroadcaseController = async (req, res) => {
@@ -25,7 +26,10 @@ exports.receiveMnpBroadcaseController = async (req, res) => {
         }
 
         // Process the broadcast message
-        await processBroadcastMessage(broadcastData);
+        // await processBroadcastMessage(broadcastData);
+
+        const result = await receiveMnpBroadcaseService(broadcastData);
+        console.log('Broadcast processing result:', result);
 
         // Send successful SOAP response
         const ackResponse = createAcknowledgeResponse(broadcastData.messageHeader.messageID);
