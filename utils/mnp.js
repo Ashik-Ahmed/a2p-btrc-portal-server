@@ -203,7 +203,7 @@ export async function processBroadcastMessage(broadcastData) {
             }
         }
 
-        console.log(`Broadcast message ${broadcastData.messageHeader.messageID} processed successfully`);
+        console.log(`Broadcast message with ID:${broadcastData.messageHeader.messageID} processed successfully`);
 
     } catch (error) {
         console.error('Error in processBroadcastMessage:', error);
