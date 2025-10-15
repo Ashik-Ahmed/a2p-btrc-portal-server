@@ -35,6 +35,6 @@ app.use('/api/v1/dippingReport', dippingReportRoute);
 app.use('/api/v1/detailsReport', detailsReportRoute);
 app.use('/api/v1/roles', roleRoute);
 app.use('/api/v1/others', othersRoute);
-app.use('/mnp/services/cdbService', mnpRoute);
+app.use('/api/v1/mnp/services/cdbService', mnpRoute);
 
 module.exports = app;
