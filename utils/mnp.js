@@ -13,10 +13,25 @@ export async function parseBroadcastMessage(xmlBody) {
     try {
         const result = await parser.parseStringPromise(xmlBody);
 
+        const findByLocalName = (obj, localName) => {
+            if (!obj || typeof obj !== 'object') return undefined
+            if (Object.prototype.hasOwnProperty.call(obj, localName)) return obj[localName]
+            for (const k of Object.keys(obj)) {
+                const parts = k.split(':')
+                const kLocal = parts.length > 1 ? parts[1] : parts[0]
+                if (kLocal === localName) return obj[k]
+            }
+            return undefined
+        }
+
+        const envelope = findByLocalName(result, 'Envelope')
+        const body = findByLocalName(envelope, 'Body')
+        const broadcast = findByLocalName(body, 'Broadcast')
+
         // Extract the broadcast data from the SOAP envelope
-        const envelope = result['soapenv:Envelope'] || result.Envelope;
-        const body = envelope['soapenv:Body'] || envelope.Body;
-        const broadcast = body['por:Broadcast'] || body.Broadcast;
+        // const envelope = result['soapenv:Envelope'] || result.Envelope;
+        // const body = envelope['soapenv:Body'] || envelope.Body;
+        // const broadcast = body['por:Broadcast'] || body.Broadcast;
 
         if (!broadcast) {
             throw new Error('Broadcast element not found');
