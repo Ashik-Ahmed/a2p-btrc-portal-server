@@ -6,6 +6,7 @@ exports.receiveMnpBroadcaseService = async (broadcastData) => {
 
     const query = "INSERT INTO mnp_broadcast (message_id, ported_date, number, recipient_rc, donor_rc, nrh_rc, ported_action, received_at) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW() AT TIME ZONE 'Asia/Dhaka')";
 
+    const results = []
 
     // Process each ported number
     for (const numberInfo of broadcastData.singleNumber) {
@@ -33,24 +34,8 @@ exports.receiveMnpBroadcaseService = async (broadcastData) => {
         const result = await client2.query(query, values);
         console.log('Inserted broadcast record ID:', result);
 
-        return result.rows[0];
-
-
-        // TODO: Implement your database storage logic here
-        // Example: await storePortedNumber(numberData, broadcastData);
-
-        // Handle portedAction based on business rules
-        // switch (numberInfo.portedAction) {
-        //     case 'INSERT':
-        //         // New porting - store new record
-
-        //         break;
-        //     case 'UPDATE':
-        //         // Number ported again to different operator - update existing record
-        //         break;
-        //     case 'DELETE':
-        //         // Number returned to NRH - delete or mark as inactive
-        //         break;
-        // }
+        results.push(result.rows[0]);
     }
+
+    return results
 }
