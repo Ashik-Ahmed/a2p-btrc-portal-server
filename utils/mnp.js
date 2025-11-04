@@ -178,6 +178,7 @@ export async function processBroadcastMessage(broadcastData) {
             numberCount: broadcastData.singleNumber.length
         });
 
+        console.log("test broadcast data:", broadcastData);
         // Log optional fields if present
         if (broadcastData.processID) {
             console.log('processID:', broadcastData.processID);
@@ -203,6 +204,13 @@ export async function processBroadcastMessage(broadcastData) {
 
             // TODO: Implement your database storage logic here
             // Example: await storePortedNumber(numberData, broadcastData);
+
+            // const result = await receiveMnpBroadcaseService(broadcastData);
+
+            // const query = "INSERT INTO mnp_broadcast (message_id, ported_date, number, recipient_rc, donor_rc, nrh_rc, ported_action, received_at) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW() AT TIME ZONE 'Asia/Dhaka')";
+
+            // const result = await client2.query(query, values);
+            // console.log('Inserted broadcast record ID:', result);
 
             // Handle portedAction based on business rules
             switch (numberInfo.portedAction) {

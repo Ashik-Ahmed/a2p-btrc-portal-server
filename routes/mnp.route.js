@@ -1,6 +1,7 @@
 const express = require('express');
 const { processBroadcastMessage } = require('../utils/mnp');
 const { receiveMnpBroadcaseController } = require('../controllers/mnp.controller');
+const { receiveMnpBroadcaseService } = require('../services/mnp.service');
 
 
 const router = express.Router();
@@ -36,15 +37,17 @@ router.post('/test-broadcast', async (req, res) => {
             singleNumber: [
                 {
                     number: '38640123456',
-                    recipientRC: 'RECIPIENT_RC',
-                    donorRC: 'DONOR_RC',
-                    nrhRC: 'NRH_RC',
+                    recipientRC: '51',
+                    donorRC: '71',
+                    nrhRC: '51',
                     portedAction: 'INSERT'
                 }
             ]
         };
 
-        await processBroadcastMessage(testData);
+        const result = await processBroadcastMessage(testData);
+        // const result = await receiveMnpBroadcaseService(testData)
+        // console.log("test result:", result);
         res.json({ success: true, message: 'Test broadcast processed' });
     } catch (error) {
         res.status(500).json({ error: error.message });

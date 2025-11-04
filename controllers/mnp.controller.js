@@ -29,7 +29,7 @@ exports.receiveMnpBroadcaseController = async (req, res) => {
         // await processBroadcastMessage(broadcastData);
 
         const result = await receiveMnpBroadcaseService(broadcastData);
-        console.log('Broadcast processing result:', result);
+        // console.log('Broadcast processing result:', result);
 
         // Send successful SOAP response
         const ackResponse = createAcknowledgeResponse(broadcastData.messageHeader.messageID);
