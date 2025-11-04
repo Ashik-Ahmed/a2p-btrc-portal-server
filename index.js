@@ -8,11 +8,17 @@ const { client2 } = require('./dbConnection');
 
 
 client.connect()
-    .then(() => console.log('Connected to the database'))
+    .then(async () => {
+        await client.query("SET TIMEZONE TO 'Asia/Dhaka'");
+        console.log('Connected to the database')
+    })
     .catch(err => console.error('Connection error', err));
 
 client2.connect()
-    .then(() => console.log('Connected to the database-2'))
+    .then(async () => {
+        await client2.query("SET TIMEZONE TO 'Asia/Dhaka'");
+        console.log('Connected to the database-2')
+    })
     .catch(err => console.error('Connection error db-2', err));
 
 
