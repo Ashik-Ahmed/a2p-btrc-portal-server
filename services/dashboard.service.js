@@ -1,4 +1,4 @@
-const client = require("../dbConnection");
+const { client } = require("../dbConnection");
 
 exports.getDashboardMonthlyDataService = async () => {
     const dashboardMonthlyData = await client.query(`SELECT 

@@ -1,4 +1,4 @@
-const client = require("../dbConnection");
+const { client } = require("../dbConnection");
 const { formatDate } = require("../utils/formatDate");
 
 exports.datewiseReportService = async (filter) => {

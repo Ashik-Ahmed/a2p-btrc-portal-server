@@ -1,4 +1,4 @@
-const client = require("../dbConnection")
+const { client } = require("../dbConnection")
 
 exports.createNewUserService = async (userData) => {
     // Extract keys and values from userData

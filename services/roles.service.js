@@ -1,4 +1,4 @@
-const client = require("../dbConnection");
+const { client } = require("../dbConnection");
 
 exports.createNewRoleService = async (roleData) => {
 
