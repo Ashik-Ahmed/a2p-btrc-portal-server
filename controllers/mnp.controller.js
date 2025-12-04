@@ -44,6 +44,7 @@ exports.receiveMnpBroadcaseController = async (req, res) => {
 exports.currentMNPStatusController = async (req, res) => {
     try {
         const msisdn = req.params.msisdn;
+
         const result = await currentMNPStatusService(msisdn);
         res.status(200).json({
             status: "Success",
