@@ -1,6 +1,6 @@
 const express = require('express');
 const { processBroadcastMessage } = require('../utils/mnp');
-const { receiveMnpBroadcaseController, currentMNPStatusController } = require('../controllers/mnp.controller');
+const { receiveMnpBroadcaseController, currentMNPStatusController, getMNPHistoryByMSISDNController } = require('../controllers/mnp.controller');
 const { receiveMnpBroadcaseService } = require('../services/mnp.service');
 
 
@@ -19,11 +19,8 @@ router.route('/cdbService/broadcast').post(receiveMnpBroadcaseController);
 router.route('/current-status/:msisdn')
     .get(currentMNPStatusController);
 
-
-
-
-
-
+router.route('/mnp-history/:msisdn')
+    .get(getMNPHistoryByMSISDNController);
 
 
 

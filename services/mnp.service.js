@@ -48,5 +48,15 @@ exports.currentMNPStatusService = async (msisdn) => {
 
     const result = await client2.query(query, values);
 
-    return result.rows[0];
+    return result.rows;
+}
+
+exports.getMNPHistoryByMSISDNService = async (msisdn) => {
+
+    const query = "SELECT * FROM mnp_broadcast WHERE number = $1 ORDER BY ported_date DESC";
+
+    const values = [msisdn];
+    const result = await client2.query(query, values);
+
+    return result.rows;
 }

@@ -1,5 +1,5 @@
 
-const { receiveMnpBroadcaseService, currentMNPStatusService } = require('../services/mnp.service');
+const { receiveMnpBroadcaseService, currentMNPStatusService, getMNPHistoryByMSISDNService } = require('../services/mnp.service');
 const { parseBroadcastMessage, createSoapFault, validateBroadcastMessage, processBroadcastMessage, createAcknowledgeResponse } = require('../utils/mnp');
 
 exports.receiveMnpBroadcaseController = async (req, res) => {
@@ -50,6 +50,27 @@ exports.currentMNPStatusController = async (req, res) => {
             data: result
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({
+            status: "Failed",
+            error: error.message
+        });
+    }
+}
+
+exports.getMNPHistoryByMSISDNController = async (req, res) => {
+    try {
+        const msisdn = req.params.msisdn;
+        const result = await getMNPHistoryByMSISDNService(msisdn);
+
+        res.status(200).json({
+            status: "Success",
+            data: result
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            status: "Failed",
+            error: error.message
+        });
     }
 }
