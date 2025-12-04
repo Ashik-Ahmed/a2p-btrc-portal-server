@@ -39,3 +39,14 @@ exports.receiveMnpBroadcaseService = async (broadcastData) => {
 
     return results
 }
+
+
+exports.currentMNPStatusService = async (msisdn) => {
+    const query = "SELECT * FROM mnp_broadcast WHERE number = $1 ORDER BY ported_date DESC LIMIT 1";
+
+    const values = [msisdn];
+
+    const result = await client2.query(query, values);
+
+    return result.rows[0];
+}

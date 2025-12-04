@@ -1,5 +1,5 @@
 
-const { receiveMnpBroadcaseService } = require('../services/mnp.service');
+const { receiveMnpBroadcaseService, currentMNPStatusService } = require('../services/mnp.service');
 const { parseBroadcastMessage, createSoapFault, validateBroadcastMessage, processBroadcastMessage, createAcknowledgeResponse } = require('../utils/mnp');
 
 exports.receiveMnpBroadcaseController = async (req, res) => {
@@ -38,5 +38,18 @@ exports.receiveMnpBroadcaseController = async (req, res) => {
     } catch (error) {
         console.error('Error processing broadcast:', error);
         res.status(500).send(createSoapFault('Internal server error'));
+    }
+}
+
+exports.currentMNPStatusController = async (req, res) => {
+    try {
+        const msisdn = req.params.msisdn;
+        const result = await currentMNPStatusService(msisdn);
+        res.status(200).json({
+            status: "Success",
+            data: result
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 }
