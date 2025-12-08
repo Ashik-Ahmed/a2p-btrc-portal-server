@@ -2,7 +2,6 @@ const { client2 } = require("../dbConnection");
 
 
 exports.receiveMnpBroadcaseService = async (broadcastData) => {
-    console.log("Broadcast Data: ", broadcastData);
 
     const query = "INSERT INTO mnp_broadcast (message_id, ported_date, number, recipient_rc, donor_rc, nrh_rc, ported_action, received_at) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW() AT TIME ZONE 'Asia/Dhaka')";
 
@@ -18,7 +17,7 @@ exports.receiveMnpBroadcaseService = async (broadcastData) => {
             portedAction: numberInfo.portedAction
         };
 
-        console.log('Processing number:', numberData);
+        // console.log('Processing number:', numberData);
 
 
         const values = [
@@ -32,7 +31,7 @@ exports.receiveMnpBroadcaseService = async (broadcastData) => {
         ];
 
         const result = await client2.query(query, values);
-        console.log('Inserted broadcast record ID:', result);
+        // console.log('Inserted broadcast record ID:', result);
 
         results.push(result.rows[0]);
     }
@@ -42,7 +41,21 @@ exports.receiveMnpBroadcaseService = async (broadcastData) => {
 
 
 exports.currentMNPStatusService = async (msisdn) => {
-    const query = "SELECT * FROM mnp_broadcast WHERE number = $1 ORDER BY ported_date DESC LIMIT 1";
+    const query = `
+        SELECT 
+            message_id,
+            ported_date::text as ported_date,
+            number,
+            recipient_rc,
+            donor_rc,
+            nrh_rc,
+            ported_action,
+            received_at::text as received_at
+        FROM mnp_broadcast 
+        WHERE number = $1 
+        ORDER BY ported_date DESC 
+        LIMIT 1
+    `;
 
     const values = [msisdn];
 
@@ -53,7 +66,21 @@ exports.currentMNPStatusService = async (msisdn) => {
 
 exports.getMNPHistoryByMSISDNService = async (msisdn) => {
 
-    const query = "SELECT * FROM mnp_broadcast WHERE number = $1 ORDER BY ported_date DESC";
+    const query = `
+        SELECT 
+            message_id,
+            ported_date::text as ported_date,
+            number,
+            recipient_rc,
+            donor_rc,
+            nrh_rc,
+            ported_action,
+            received_at::text as received_at
+        FROM mnp_broadcast 
+        WHERE number = $1 
+        ORDER BY ported_date DESC 
+        LIMIT 1
+    `;
 
     const values = [msisdn];
     const result = await client2.query(query, values);

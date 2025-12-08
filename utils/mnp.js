@@ -168,27 +168,27 @@ export function validateBroadcastMessage(broadcastData) {
 // Process broadcast message (implement your database logic here)
 export async function processBroadcastMessage(broadcastData) {
     try {
-        console.log('Processing broadcast message:', {
-            messageID: broadcastData.messageHeader.messageID,
-            sender: broadcastData.messageHeader.senderID,
-            receiver: broadcastData.messageHeader.receiverID,
-            timestamp: broadcastData.messageHeader.timestamp,
-            processName: broadcastData.processName,
-            portedDate: broadcastData.portedDate,
-            numberCount: broadcastData.singleNumber.length
-        });
+        // console.log('Processing broadcast message:', {
+        //     messageID: broadcastData.messageHeader.messageID,
+        //     sender: broadcastData.messageHeader.senderID,
+        //     receiver: broadcastData.messageHeader.receiverID,
+        //     timestamp: broadcastData.messageHeader.timestamp,
+        //     processName: broadcastData.processName,
+        //     portedDate: broadcastData.portedDate,
+        //     numberCount: broadcastData.singleNumber.length
+        // });
 
-        console.log("test broadcast data:", broadcastData);
+        // console.log("test broadcast data:", broadcastData);
         // Log optional fields if present
-        if (broadcastData.processID) {
-            console.log('processID:', broadcastData.processID);
-        }
-        if (broadcastData.processType) {
-            console.log('processType:', broadcastData.processType);
-        }
-        if (broadcastData.relatedProcessID) {
-            console.log('relatedProcessID:', broadcastData.relatedProcessID);
-        }
+        // if (broadcastData.processID) {
+        //     console.log('processID:', broadcastData.processID);
+        // }
+        // if (broadcastData.processType) {
+        //     console.log('processType:', broadcastData.processType);
+        // }
+        // if (broadcastData.relatedProcessID) {
+        //     console.log('relatedProcessID:', broadcastData.relatedProcessID);
+        // }
 
         // Process each ported number
         for (const numberInfo of broadcastData.singleNumber) {
@@ -200,7 +200,7 @@ export async function processBroadcastMessage(broadcastData) {
                 portedAction: numberInfo.portedAction
             };
 
-            console.log('Processing number:', numberData);
+            // console.log('Processing number:', numberData);
 
             // TODO: Implement your database storage logic here
             // Example: await storePortedNumber(numberData, broadcastData);
@@ -226,10 +226,10 @@ export async function processBroadcastMessage(broadcastData) {
             }
         }
 
-        console.log(`Broadcast message with ID:${broadcastData.messageHeader.messageID} processed successfully`);
+        // console.log(`Broadcast message with ID:${broadcastData.messageHeader.messageID} processed successfully`);
 
     } catch (error) {
-        console.error('Error in processBroadcastMessage:', error);
+        // console.error('Error in processBroadcastMessage:', error);
         throw error;
     }
 }

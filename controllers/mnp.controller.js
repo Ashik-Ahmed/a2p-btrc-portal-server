@@ -10,7 +10,7 @@ exports.receiveMnpBroadcaseController = async (req, res) => {
 
     try {
         const xmlBody = req.body.toString();
-        console.log('Received SOAP broadcast message:', xmlBody);
+        // console.log('Received SOAP broadcast message:', xmlBody);
 
         // Parse the SOAP message with xml2js
         const broadcastData = await parseBroadcastMessage(xmlBody);
@@ -46,6 +46,7 @@ exports.currentMNPStatusController = async (req, res) => {
         const msisdn = req.params.msisdn;
 
         const result = await currentMNPStatusService(msisdn);
+
         res.status(200).json({
             status: "Success",
             data: result
@@ -62,7 +63,6 @@ exports.getMNPHistoryByMSISDNController = async (req, res) => {
     try {
         const msisdn = req.params.msisdn;
         const result = await getMNPHistoryByMSISDNService(msisdn);
-
         res.status(200).json({
             status: "Success",
             data: result
