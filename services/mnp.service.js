@@ -65,7 +65,6 @@ exports.currentMNPStatusService = async (msisdn) => {
 }
 
 exports.getMNPHistoryByMSISDNService = async (msisdn) => {
-
     const query = `
         SELECT 
             message_id,
@@ -78,12 +77,10 @@ exports.getMNPHistoryByMSISDNService = async (msisdn) => {
             received_at::text as received_at
         FROM mnp_broadcast 
         WHERE number = $1 
-        ORDER BY ported_date DESC 
-        LIMIT 1
+        ORDER BY ported_date DESC
     `;
 
     const values = [msisdn];
     const result = await client2.query(query, values);
-
     return result.rows;
 }
