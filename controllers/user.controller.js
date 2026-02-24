@@ -68,7 +68,8 @@ exports.getUserById = async (req, res) => {
             const { password, ...others } = user
             res.status(200).json({
                 status: "Success",
-                data: user
+                // data: user
+                data: others
             })
         }
         else {
@@ -107,6 +108,7 @@ exports.updatePasswordById = async (req, res) => {
         }
 
         const user = await getUserByIdService(id);
+
         if (!user) {
             return res.status(403).json({
                 status: "Failed",
@@ -114,7 +116,7 @@ exports.updatePasswordById = async (req, res) => {
             })
         }
 
-        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        const isMatch = await bcrypt.compare(currentPassword, user?.password);
         if (!isMatch) {
             return res.status(405).json({
                 status: "Failed",
