@@ -1,5 +1,5 @@
 
-const { receiveMnpBroadcaseService, currentMNPStatusService, getMNPHistoryByMSISDNService } = require('../services/mnp.service');
+const { receiveMnpBroadcaseService, currentMNPStatusService, getMNPHistoryByMSISDNService, getTodayMNPCountService } = require('../services/mnp.service');
 const { parseBroadcastMessage, createSoapFault, validateBroadcastMessage, processBroadcastMessage, createAcknowledgeResponse } = require('../utils/mnp');
 
 exports.receiveMnpBroadcaseController = async (req, res) => {
@@ -63,6 +63,24 @@ exports.getMNPHistoryByMSISDNController = async (req, res) => {
     try {
         const msisdn = req.params.msisdn;
         const result = await getMNPHistoryByMSISDNService(msisdn);
+        res.status(200).json({
+            status: "Success",
+            data: result
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            status: "Failed",
+            error: error.message
+        });
+    }
+}
+
+exports.getTodayMNPCountController = async (req, res) => {
+    const date = req.query.date; // Optional date parameter in YYYY-MM-DD format
+    console.log(date);
+    try {
+        const result = await getTodayMNPCountService(date);
         res.status(200).json({
             status: "Success",
             data: result

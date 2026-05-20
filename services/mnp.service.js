@@ -84,3 +84,14 @@ exports.getMNPHistoryByMSISDNService = async (msisdn) => {
     const result = await client2.query(query, values);
     return result.rows;
 }
+
+exports.getTodayMNPCountService = async (date) => {
+    const query = `
+        SELECT 
+            COUNT(*) as total_count
+        FROM mnp_broadcast 
+        WHERE DATE(ported_date) = ${date ? `'${date}'` : 'CURRENT_DATE'}
+    `;
+    const result = await client2.query(query);
+    return Number(result.rows[0].total_count);
+}
